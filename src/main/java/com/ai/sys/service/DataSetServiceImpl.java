@@ -1,14 +1,14 @@
 package com.ai.sys.service;
 
 import com.ai.sys.exception.ResourceOperationException;
-import com.ai.sys.model.DataSet;
+import com.ai.sys.model.entity.Category;
+import com.ai.sys.model.entity.DataSet;
 import com.ai.sys.repository.DataSetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +28,9 @@ public class DataSetServiceImpl implements DataSetService {
                         .build());
     }
 
-    public List<DataSet> findByTags(List<String> tags) {
-        return dataSetRepository.findByTagNameIn(tags);
-    }
+//    public List<DataSet> findByTags(List<String> tags) {
+//        return dataSetRepository.findByTagNameIn(tags);
+//    }
 
     @Override
     public List<DataSet> findByName(String name) {
@@ -71,7 +71,10 @@ public class DataSetServiceImpl implements DataSetService {
         DataSet updateDataSet = byName.get(0);
         updateDataSet.setName(dataSet.getName());
         updateDataSet.setPath(dataSet.getPath());
-        updateDataSet.setTags(dataSet.getTags());
+        //updateDataSet.setTags(dataSet.getTags());
+        updateDataSet.setCategory(Category.builder()
+                .name(dataSet.getCategory().getName())
+                .build());
         dataSetRepository.save(updateDataSet);
     }
 

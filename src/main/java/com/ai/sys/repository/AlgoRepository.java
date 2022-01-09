@@ -1,6 +1,6 @@
 package com.ai.sys.repository;
 
-import com.ai.sys.model.Algo;
+import com.ai.sys.model.entity.Algo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.ai.sys.model;
+package com.ai.sys.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

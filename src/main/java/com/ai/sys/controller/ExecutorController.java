@@ -1,6 +1,5 @@
 package com.ai.sys.controller;
 
-import com.ai.sys.model.Algo;
 import com.ai.sys.model.Command;
 import com.ai.sys.train.DatasetProcessor;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,7 @@ public class ExecutorController {
     public @ResponseBody
     ResponseEntity<HttpStatus> execute(@RequestBody Command command) {
         try {
-            datasetProcessor.process(command.getAlgoPath(), command.getDataSetPath());
+            datasetProcessor.process(command.getAlgoPath(), command.getParams(), command.getDataSetPath());
             return ResponseEntity.accepted().build();
         } catch (InterruptedException | IOException e) {
             log.debug(e.getLocalizedMessage());

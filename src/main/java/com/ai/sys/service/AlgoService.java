@@ -1,7 +1,7 @@
 package com.ai.sys.service;
 
 import com.ai.sys.exception.ResourceOperationException;
-import com.ai.sys.model.Algo;
+import com.ai.sys.model.entity.Algo;
 
 public interface AlgoService {
 

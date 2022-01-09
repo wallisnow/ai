@@ -1,7 +1,7 @@
 package com.ai.sys.controller;
 
 import com.ai.sys.exception.ResourceOperationException;
-import com.ai.sys.model.Algo;
+import com.ai.sys.model.entity.Algo;
 import com.ai.sys.service.AlgoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

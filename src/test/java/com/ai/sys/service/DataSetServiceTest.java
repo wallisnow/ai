@@ -1,7 +1,7 @@
 package com.ai.sys.service;
 
 import com.ai.sys.exception.ResourceOperationException;
-import com.ai.sys.model.DataSet;
+import com.ai.sys.model.entity.DataSet;
 import com.ai.sys.repository.DataSetRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

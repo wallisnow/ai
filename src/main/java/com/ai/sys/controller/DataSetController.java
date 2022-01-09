@@ -1,7 +1,7 @@
 package com.ai.sys.controller;
 
 import com.ai.sys.exception.ResourceOperationException;
-import com.ai.sys.model.DataSet;
+import com.ai.sys.model.entity.DataSet;
 import com.ai.sys.service.DataSetService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,11 +31,11 @@ public class DataSetController {
         return dataSetService.findByName(name);
     }
 
-    @GetMapping("/tags/")
-    public @ResponseBody
-    List<DataSet> findDataSetByTags(@RequestParam("tags") List<String> tags) {
-        return dataSetService.findByTags(tags);
-    }
+//    @GetMapping("/tags/")
+//    public @ResponseBody
+//    List<DataSet> findDataSetByTags(@RequestParam("tags") List<String> tags) {
+//        return dataSetService.findByTags(tags);
+//    }
 
     @PostMapping(value = "/", consumes = {"application/json"})
     public ResponseEntity<String> addDataSet(@RequestBody DataSet dataSet) {

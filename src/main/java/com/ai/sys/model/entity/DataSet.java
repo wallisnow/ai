@@ -1,4 +1,4 @@
-package com.ai.sys.model;
+package com.ai.sys.model.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,8 @@ import javax.persistence.*;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-public class Algo extends DateAudit{
+public class DataSet extends DateAudit {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -23,5 +24,8 @@ public class Algo extends DateAudit{
     private String name;
     @NonNull
     private String path;
-    private String description;
+
+    @ManyToOne(cascade={CascadeType.MERGE})
+    @JoinColumn(name = "category_name")
+    private Category category;
 }

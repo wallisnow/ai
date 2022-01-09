@@ -1,13 +1,12 @@
 package com.ai.sys.service;
 
 import com.ai.sys.exception.ResourceOperationException;
-import com.ai.sys.model.Algo;
+import com.ai.sys.model.entity.Algo;
 import com.ai.sys.repository.AlgoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.Optional;
 
 @Service
