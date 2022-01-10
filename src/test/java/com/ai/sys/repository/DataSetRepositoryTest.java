@@ -32,6 +32,7 @@ class DataSetRepositoryTest extends RepositoryTest {
 
         imageCategory = Category.builder()
                 .name("image")
+                .description("image type")
                 .createdAt(now)
                 .updatedAt(updatedAt)
                 .build();

@@ -11,7 +11,8 @@ import javax.persistence.Id;
 @Entity
 @SuperBuilder
 @RequiredArgsConstructor
-public class Category extends DateAudit{
+public class Category extends DateAudit {
     @Id
     private String name;
+    private String description;
 }
