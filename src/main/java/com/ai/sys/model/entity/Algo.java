@@ -24,4 +24,8 @@ public class Algo extends DateAudit{
     @NonNull
     private String path;
     private String description;
+
+    @ManyToOne(cascade={CascadeType.MERGE})
+    @JoinColumn(name = "algotype_name")
+    private AlgoType algoType;
 }

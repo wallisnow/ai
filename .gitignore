@@ -37,4 +37,6 @@ out/
 .vscode/
 
 ### DB ###
-/src/main/resources/docker/pgdata/
+/docker/pgdata/
+
+/uploads

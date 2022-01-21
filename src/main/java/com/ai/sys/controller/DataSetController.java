@@ -31,13 +31,7 @@ public class DataSetController {
         return dataSetService.findByName(name);
     }
 
-//    @GetMapping("/tags/")
-//    public @ResponseBody
-//    List<DataSet> findDataSetByTags(@RequestParam("tags") List<String> tags) {
-//        return dataSetService.findByTags(tags);
-//    }
-
-    @PostMapping(value = "/", consumes = {"application/json"})
+    @PostMapping(value = "/add", consumes = {"application/json"})
     public ResponseEntity<String> addDataSet(@RequestBody DataSet dataSet) {
         try {
             dataSetService.create(dataSet);

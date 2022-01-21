@@ -21,7 +21,7 @@ public class AlgoServiceImpl implements AlgoService {
             throw ResourceOperationException.builder()
                     .resourceName("Algorithm")
                     .status(HttpStatus.BAD_REQUEST)
-                    .message("Algorithm create failed:" + e.getCause().getMessage())
+                    .message("Algorithm create failed: " + e.getCause().getCause().getMessage())
                     .build();
         }
     }

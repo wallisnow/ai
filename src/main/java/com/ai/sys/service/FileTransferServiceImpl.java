@@ -21,7 +21,7 @@ public class FileTransferServiceImpl implements FileTransferService {
 
     @Override
     public void init() throws IOException {
-        Files.createDirectory(root);
+        Files.createDirectories(root);
     }
 
     @Override

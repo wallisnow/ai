@@ -1,10 +1,8 @@
 package com.ai.sys.controller;
 
-
 import com.ai.sys.exception.ResourceOperationException;
-import com.ai.sys.model.entity.Algo;
-import com.ai.sys.model.entity.Category;
-import com.ai.sys.service.CategoryService;
+import com.ai.sys.model.entity.AlgoType;
+import com.ai.sys.service.AlgoTypeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -14,17 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/category")
-public class CategoryController {
+@RequestMapping("/api/v1/algotype")
+public class AlgoTypeController {
 
-    private final CategoryService categoryService;
+    private final AlgoTypeService algoTypeService;
 
     @GetMapping("/{name}")
     public @ResponseBody
-    ResponseEntity<Category> findCategoryByName(@PathVariable("name") String name) {
+    ResponseEntity<AlgoType> findAlgoTypeByName(@PathVariable("name") String name) {
         try {
-            Category category = categoryService.find(name);
-            return ResponseEntity.ok(category);
+            AlgoType algoType = algoTypeService.find(name);
+            return ResponseEntity.ok(algoType);
         } catch (ResourceOperationException e) {
             return ResponseEntity
                     .status(e.getStatus())
@@ -33,9 +31,9 @@ public class CategoryController {
     }
 
     @PostMapping(value = "/add", consumes = {"application/json"})
-    public ResponseEntity<String> addCategory(@RequestBody Category category) {
+    public ResponseEntity<String> addAlgoType(@RequestBody AlgoType algoType) {
         try {
-            categoryService.create(category);
+            algoTypeService.create(algoType);
             return ResponseEntity.ok().build();
         } catch (ResourceOperationException e) {
             log.debug("create category failed");
@@ -46,9 +44,9 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{name}")
-    public ResponseEntity<HttpStatus> deleteDataSet(@PathVariable("name") String name) {
+    public ResponseEntity<HttpStatus> deleteAlgoType(@PathVariable("name") String name) {
         try {
-            categoryService.delete(name);
+            algoTypeService.delete(name);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             log.error(e.getStackTrace());
