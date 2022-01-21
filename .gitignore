@@ -39,4 +39,5 @@ out/
 ### DB ###
 /docker/pgdata/
 
-/uploads
+### File upload location ###
+/uploads/
