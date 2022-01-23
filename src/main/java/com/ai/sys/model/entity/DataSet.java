@@ -22,7 +22,6 @@ public class DataSet extends DateAudit {
     @NonNull
     @Column(unique = true)
     private String name;
-    @NonNull
     private String path;
 
     @ManyToOne(cascade={CascadeType.MERGE})

@@ -1,14 +1,19 @@
 package com.ai.sys.controller;
 
 import com.ai.sys.exception.ResourceOperationException;
+import com.ai.sys.model.entity.Algo;
 import com.ai.sys.model.entity.DataSet;
 import com.ai.sys.service.DataSetService;
+import com.ai.sys.service.FileTransferService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Log4j2
@@ -18,6 +23,7 @@ import java.util.List;
 public class DataSetController {
 
     private final DataSetService dataSetService;
+    private final FileTransferService fileTransferService;
 
     @GetMapping("/{id}")
     public @ResponseBody
@@ -29,6 +35,29 @@ public class DataSetController {
     public @ResponseBody
     List<DataSet> findDataSetByName(@RequestParam("name") String name) {
         return dataSetService.findByName(name);
+    }
+
+
+    @PostMapping(value = "/simples", consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<String> addAlgoWithFile(@RequestPart("dataset") DataSet dataSet, @RequestPart("file") MultipartFile file) {
+        try {
+            String algoScriptPath = fileTransferService.save(file);
+            dataSet.setPath(algoScriptPath);
+            dataSetService.create(dataSet);
+            return ResponseEntity
+                    .ok()
+                    .body("Dataset created, and algo script path is: " + algoScriptPath);
+        } catch (ResourceOperationException e) {
+            log.debug("create dataset failed");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Could not upload the file: " + file.getOriginalFilename() + "!");
+        }
     }
 
     @PostMapping(value = "/add", consumes = {"application/json"})

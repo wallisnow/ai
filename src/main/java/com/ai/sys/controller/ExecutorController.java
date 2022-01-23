@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 @Log4j2
 @RestController
@@ -17,7 +18,7 @@ import java.io.IOException;
 public class ExecutorController {
     private final DatasetProcessor datasetProcessor;
 
-    @PostMapping("/")
+    @PostMapping("/algo")
     public @ResponseBody
     ResponseEntity<HttpStatus> execute(@RequestBody Command command) {
         try {
@@ -25,6 +26,9 @@ public class ExecutorController {
             return ResponseEntity.accepted().build();
         } catch (InterruptedException | IOException e) {
             log.debug(e.getLocalizedMessage());
+            return ResponseEntity.internalServerError().build();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }

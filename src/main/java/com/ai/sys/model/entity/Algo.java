@@ -21,7 +21,6 @@ public class Algo extends DateAudit{
     @NonNull
     @Column(unique = true)
     private String name;
-    @NonNull
     private String path;
     private String description;
 
