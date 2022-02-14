@@ -1,6 +1,6 @@
 package com.ai.sys.security;
 
-import com.ai.sys.common.R;
+import com.ai.sys.common.Response;
 import com.ai.sys.config.ConfigConstValue;
 import com.ai.sys.utils.JwtUtils;
 import com.ai.sys.utils.ServletUtils;
@@ -32,7 +32,7 @@ public class SecurityAuthTokenFilter extends BasicAuthenticationFilter {
         if (StringUtils.hasLength(token)) {
             SecurityUser userInfo = JwtUtils.getUserInfoByToken(token);
             if (userInfo == null) {
-                ServletUtils.render(request, response, R.error("Token过期或无效"));
+                ServletUtils.render(request, response, Response.error("Token过期或无效"));
                 return;
             }
             if (StringUtils.hasLength(userInfo.getUsername()) && SecurityContextHolder.getContext().getAuthentication() == null) {

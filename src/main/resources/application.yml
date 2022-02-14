@@ -34,6 +34,12 @@ spring:
 
 login:
   token-key: token
+jwt:
+  # jwt密钥，验签需要
+  secret: rstyro2dcad64e9cbd542c5584f1103110e6ce2dcad64e9cbd542c5584rstyro
+  # 过期时间单位：分钟
+  expireTime: 30
+  subject: token
 
 logging:
   level:

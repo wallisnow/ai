@@ -1,10 +1,10 @@
 package com.ai.sys.handler;
 
+import com.ai.sys.common.Response;
+import com.ai.sys.utils.ServletUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import top.lrshuai.security.commons.R;
-import top.lrshuai.security.util.ServletUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +19,6 @@ public class AnonymousAuthenticationEntryPoint implements AuthenticationEntryPoi
     //未登录时返回给前端数据
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
-        ServletUtils.render(request,response,R.error("需要登录"));
+        ServletUtils.render(request,response, Response.error("需要登录"));
     }
 }

@@ -97,6 +97,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()// 授权
                 .antMatchers("/index/**").anonymous()// 匿名用户权限
                 .antMatchers("/api/**").hasRole("USER")//普通用户权限
+                .antMatchers("/register/**").permitAll()
                 .antMatchers("/login").permitAll()
                 //其他的需要授权后访问
                 .anyRequest().authenticated()

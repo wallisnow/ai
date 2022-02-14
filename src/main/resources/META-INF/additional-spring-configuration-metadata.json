@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "login.token-key",
+      "type": "java.lang.String",
+      "description": "Description for login.token-key."
+  }
+] }

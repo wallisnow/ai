@@ -1,7 +1,5 @@
 package com.ai.sys.service.sys;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-
 import java.util.Collection;
 import java.util.Set;
 

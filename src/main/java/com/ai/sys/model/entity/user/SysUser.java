@@ -1,6 +1,7 @@
-package com.ai.sys.model.entity.sys;
+package com.ai.sys.model.entity.user;
 
 import com.ai.sys.model.entity.DateAudit;
+import com.ai.sys.model.entity.sys.SysRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,26 +11,35 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * <p>
+ *
+ * </p>
+ *
+ * @author rstyro
+ * @since 2021-07-16
+ */
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-public class SysRole extends DateAudit {
+public class SysUser extends DateAudit {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String roleName;
-    private String roleDesc;
+
+    private String username;
+    private String password;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "menu_role",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_id")
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<SysMenu> menus = new HashSet<>();
+    private Set<SysRole> roles = new HashSet<>();
 }

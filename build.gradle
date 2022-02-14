@@ -40,6 +40,9 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 // https://mvnrepository.com/artifact/top.lrshuai.encryption/encryption-tools
     implementation 'top.lrshuai.encryption:encryption-tools:1.0.4'
+    // https://mvnrepository.com/artifact/com.alibaba/fastjson
+    implementation 'com.alibaba:fastjson:1.2.79'
+
 
 
     compileOnly 'org.projectlombok:lombok'

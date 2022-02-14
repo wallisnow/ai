@@ -1,11 +1,12 @@
 package com.ai.sys.security;
 
-import com.ai.sys.common.R;
+import com.ai.sys.common.Response;
 import com.ai.sys.model.LoginEntry;
 import com.ai.sys.utils.JwtUtils;
 import com.ai.sys.utils.ServletUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -23,6 +24,7 @@ import java.util.HashSet;
 /**
  * 自定义登录过滤器
  */
+@Log4j2
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     /**
@@ -49,11 +51,11 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @SneakyThrows
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LoginEntry user = new ObjectMapper().readValue(request.getInputStream(), LoginEntry.class);
-        // 前端提交上来的是明文，数据库保存的密码是简单的 md5 加密，所以这边要和数据库保存的密码算法一致
-        String encryptPwd = MDUtil.bcMD5(user.getPassword());
+//        // 前端提交上来的是明文，数据库保存的密码是简单的 md5 加密，所以这边要和数据库保存的密码算法一致
+//        String encryptPwd = MDUtil.bcMD5(user.getPassword());
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user.getUsername(),
-                encryptPwd);
+                user.getPassword());
         return getAuthenticationManager().authenticate(authenticationToken);
     }
 
@@ -64,13 +66,14 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) {
         SecurityUser principal = (SecurityUser) auth.getPrincipal();
-        System.out.println("authorite=" + principal.getAuthorities().toString());
+        //System.out.println("authorite=" + principal.getAuthorities().toString());
+        log.debug("authorite=" + principal.getAuthorities().toString());
         String token = JwtUtils.generateKey(new SecurityUser()
                 .setUsername(principal.getUsername())
                 .setAuthorities(new HashSet<>(principal.getAuthorities())));
         try {
             //登录成功時，返回json格式进行提示
-            ServletUtils.render(request, response, R.ok(token));
+            ServletUtils.render(request, response, Response.ok(token));
         } catch (Exception e1) {
             e1.printStackTrace();
         }
@@ -110,6 +113,6 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         else {
             result = "未知异常";
         }
-        ServletUtils.render(request, response, R.error(result));
+        ServletUtils.render(request, response, Response.error(result));
     }
 }

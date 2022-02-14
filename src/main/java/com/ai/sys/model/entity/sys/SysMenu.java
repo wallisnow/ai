@@ -1,5 +1,6 @@
 package com.ai.sys.model.entity.sys;
 
+import com.ai.sys.model.entity.DateAudit;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
@@ -24,7 +25,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-public class SysMenu implements Serializable {
+public class SysMenu extends DateAudit {
 
     private static final long serialVersionUID = 1L;
 
@@ -73,19 +74,9 @@ public class SysMenu implements Serializable {
     private Long createBy;
 
     /**
-     * 创建时间
-     */
-    private LocalDateTime createTime;
-
-    /**
      * 更新者
      */
     private Long updateBy;
-
-    /**
-     * 更新时间
-     */
-    private LocalDateTime updateTime;
 
     /**
      * 0:未删除    1:已删除
