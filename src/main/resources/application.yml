@@ -31,9 +31,19 @@ spring:
         validate-on-migrate: true
         # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
         baseline-on-migrate: true
+app:
+    security:
+        cors:
+            origin: http://localhost:8080
+        jwt:
+            key-alias: jwtsigning
+            keystore-location: keys/keystore.jks
+            keystore-password: 123456
+            private-key-passphrase: 123456
 logging:
   level:
     org:
-      springframework: trace
+      springframework:
+        security: DEBUG
       hibernate:
         type: trace

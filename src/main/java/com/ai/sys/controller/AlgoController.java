@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,6 +28,7 @@ public class AlgoController {
     private final FileTransferService fileTransferService;
 
     @GetMapping("/{name}")
+    @PreAuthorize("hasAuthority('DEVELOPER')")
     public @ResponseBody
     ResponseEntity<Algo> findAlgoByName(@PathVariable("name") String name) {
         try {
@@ -40,6 +42,7 @@ public class AlgoController {
     }
 
     @PostMapping(value = "/script", consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PreAuthorize("hasAnyAuthority('ASSISTANT_MANAGER', 'MANAGER', 'ADMIN')")
     public ResponseEntity<String> addAlgoWithFile(@RequestPart("algo") Algo algo, @RequestPart("file") MultipartFile file) {
         try {
             String algoScriptPath = fileTransferService.save(file);
