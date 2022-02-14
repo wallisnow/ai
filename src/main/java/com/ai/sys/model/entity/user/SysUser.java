@@ -11,14 +11,6 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * <p>
- *
- * </p>
- *
- * @author rstyro
- * @since 2021-07-16
- */
 @Getter
 @Setter
 @SuperBuilder
