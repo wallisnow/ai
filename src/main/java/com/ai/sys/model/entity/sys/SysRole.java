@@ -22,6 +22,7 @@ public class SysRole extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String roleName;
     private String roleDesc;
 

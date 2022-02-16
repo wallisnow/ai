@@ -1,5 +1,6 @@
 package com.ai.sys.security;
 
+import com.ai.sys.config.Constant;
 import com.ai.sys.model.entity.sys.SysRole;
 import com.ai.sys.model.entity.user.SysUser;
 import com.ai.sys.service.sys.SysRoleMenuService;
@@ -76,6 +77,15 @@ public class SecurityUserService implements UserDetailsService {
                 GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.trim());
                 grantedAuthorities.add(grantedAuthority);
             });
+        }
+
+        //Remove this !!!
+        if (username.equals("admin")){
+            SecurityUser securityUser = new SecurityUser();
+            securityUser.setUsername(user.getUsername())
+                    .setPassword(user.getPassword())
+                    .setAuthorities(Set.of(new SimpleGrantedAuthority("ROLE_"+ Constant.ROLE_SUPER_ADMIN)));
+            return securityUser;
         }
 
         SecurityUser securityUser = new SecurityUser();

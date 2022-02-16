@@ -40,11 +40,19 @@ public class Response extends HashMap<String, Object> {
 		return r;
 	}
 
+	public static Response error(String status, Object data) {
+		Response r = new Response();
+		r.put(STATUS, status);
+		r.put(DATA,data);
+		return r;
+	}
+
 	public static Response ok(Map<String, Object> map) {
 		Response r = new Response();
 		r.putAll(map);
 		return r;
 	}
+
 	public static Response ok(Object data) {
 		Response responce = new Response();
 		responce.put(DATA,data);

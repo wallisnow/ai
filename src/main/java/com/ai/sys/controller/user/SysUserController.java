@@ -7,17 +7,19 @@ import com.ai.sys.model.entity.sys.SysRole;
 import com.ai.sys.model.entity.user.SysUser;
 import com.ai.sys.service.user.SysUserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
+import static com.ai.sys.config.Constant.ROLE_USER;
+
+@Log4j2
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/register")
 public class SysUserController {
-
-    public static final String USER_ROLE_STR = "USER";
 
     private final SysUserService sysUserService;
     /**
@@ -31,14 +33,24 @@ public class SysUserController {
         SysUser newUser = SysUser.builder()
                 .username(user.getUsername())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .roles(Set.of(SysRole.builder().roleName(USER_ROLE_STR).roleDesc(USER_ROLE_STR).build()))
+                .roles(Set.of(SysRole.builder().roleName(ROLE_USER).roleDesc(ROLE_USER).build()))
                 .build();
         try {
             sysUserService.create(newUser);
         } catch (ResourceOperationException e) {
-            e.printStackTrace();
-            return Response.error("注册失败");
+            return Response.error(e.getStatus().toString(), e);
         }
         return Response.ok("注册成功");
+    }
+
+    @PostMapping(value = "/update", consumes = {"application/json"})
+    public Response updateUser(@RequestBody SysUser user) {
+        try {
+            sysUserService.update(user);
+            return Response.ok("修改成功");
+        } catch (ResourceOperationException e) {
+            log.debug("create category failed");
+            return Response.error(e.getStatus().toString(), e);
+        }
     }
 }

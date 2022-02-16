@@ -1,25 +1,16 @@
 package com.ai.sys.model.entity.sys;
 
 import com.ai.sys.model.entity.DateAudit;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
-/**
- * <p>
- * 菜单管理
- * </p>
- *
- * @author rstyro
- * @since 2021-07-22
- */
 @Getter
 @Setter
 @SuperBuilder
@@ -30,13 +21,8 @@ public class SysMenu extends DateAudit {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    /**
-     * 上级ID，一级菜单为0
-     */
-    private Long pid;
 
     /**
      * 菜单URL
@@ -83,5 +69,11 @@ public class SysMenu extends DateAudit {
      */
     private Boolean deleted;
 
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    @JsonBackReference
+    private SysMenu parent;
 
+    @OneToMany(mappedBy="parent")
+    private List<SysMenu> submenus;
 }
