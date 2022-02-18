@@ -20,13 +20,11 @@ public class SysRole extends DateAudit {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String roleName;
+    @Column
     private String roleDesc;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "menu_role",
             joinColumns = @JoinColumn(name = "role_id"),

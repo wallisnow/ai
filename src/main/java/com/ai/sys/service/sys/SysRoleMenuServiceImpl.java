@@ -1,36 +1,38 @@
 package com.ai.sys.service.sys;
 
 import com.ai.sys.model.entity.sys.SysMenu;
-import com.ai.sys.repository.sys.SysMenuRepository;
+import com.ai.sys.model.entity.sys.SysRole;
+import com.ai.sys.repository.sys.SysRoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-/**
- * <p>
- * 角色菜单关系 服务实现类
- * </p>
- *
- * @author rstyro
- * @since 2021-07-22
- */
 @Service
 @RequiredArgsConstructor
 public class SysRoleMenuServiceImpl implements SysRoleMenuService {
 
-    private final SysMenuRepository sysMenuRepository;
+    private final SysRoleRepository sysRoleRepository;
 
     @Override
-    public Set<String> getPermissionsByRoleIds(Collection<Long> roleIds) {
-        List<SysMenu> allMenus = sysMenuRepository.findAllById(roleIds);
-        if (!ObjectUtils.isEmpty(allMenus)) {
-            return allMenus.stream().map(SysMenu::getPermissions).collect(Collectors.toSet());
+    public Set<String> getPermissionsByRoleNames(Collection<String> roleNames) {
+        List<SysRole> roles = sysRoleRepository.findAllById(roleNames);
+        Set<String> permissions = new HashSet<>();
+        if (!ObjectUtils.isEmpty(roles)) {
+            roles.forEach(sysRole -> {
+                Set<SysMenu> menus = sysRole.getMenus();
+                if (!ObjectUtils.isEmpty(menus)){
+                    menus.forEach(sysMenu -> {
+                        permissions.add(sysMenu.getPermissions());
+                    });
+                }
+            });
+
         }
-        return Set.of();
+        return permissions;
     }
 }

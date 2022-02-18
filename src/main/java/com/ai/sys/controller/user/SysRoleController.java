@@ -16,7 +16,7 @@ import java.util.List;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/role")
+@RequestMapping("/sys/role")
 public class SysRoleController {
 
     private final SysUserService sysUserService;
@@ -44,21 +44,32 @@ public class SysRoleController {
         }
     }
 
-    @PostMapping(value = "/user/update", consumes = {"application/json"})
+    @PutMapping(value = "/modify", consumes = {"application/json"})
+    public Response updateSysRole(@RequestBody SysRole sysRole) {
+        try {
+            sysRoleService.update(sysRole);
+            return Response.ok("Role updated");
+        } catch (ResourceOperationException e) {
+            log.debug("update Role failed");
+            return Response.error(e.getStatus().toString(), e);
+        }
+    }
+
+    @PutMapping(value = "/user/update", consumes = {"application/json"})
     public Response updateUser(@RequestBody SysUser user) {
         try {
             sysUserService.updateWithRole(user);
             return Response.ok("update successful");
         } catch (ResourceOperationException e) {
-            log.debug("modify user failed");
+            log.debug("update user failed");
             return Response.error(e.getStatus().toString(), e);
         }
     }
 
-    @DeleteMapping("/{id}")
-    public Response deleteSysRole(@PathVariable("id") Long id) {
+    @DeleteMapping("/delete/{role}")
+    public Response deleteSysRole(@PathVariable("role") String role) {
         try {
-            sysRoleService.delete(id);
+            sysRoleService.delete(role);
             return Response.ok("Deleted");
         } catch (ResourceOperationException e) {
             log.debug(e.getStackTrace());

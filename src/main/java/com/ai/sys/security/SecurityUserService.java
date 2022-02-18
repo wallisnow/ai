@@ -60,8 +60,8 @@ public class SecurityUserService implements UserDetailsService {
         Set<SysRole> roles = user.getRoles();
 
         if (!ObjectUtils.isEmpty(roles)) {
-            Set<Long> roleIds = roles.stream().map(SysRole::getId).collect(Collectors.toSet());
-            Set<String> rolePermissions = sysRoleMenuService.getPermissionsByRoleIds(roleIds);
+            Set<String> roleNames = roles.stream().map(SysRole::getRoleName).collect(Collectors.toSet());
+            Set<String> rolePermissions = sysRoleMenuService.getPermissionsByRoleNames(roleNames);
 
             // 添加 角色权限
             roles.forEach(r -> {
@@ -80,11 +80,11 @@ public class SecurityUserService implements UserDetailsService {
         }
 
         //Remove this !!!
-        if (username.equals("admin")){
+        if (username.equals("admin")) {
             SecurityUser securityUser = new SecurityUser();
             securityUser.setUsername(user.getUsername())
                     .setPassword(user.getPassword())
-                    .setAuthorities(Set.of(new SimpleGrantedAuthority("ROLE_"+ Constant.ROLE_SUPER_ADMIN)));
+                    .setAuthorities(Set.of(new SimpleGrantedAuthority("ROLE_" + Constant.ROLE_SUPER_ADMIN)));
             return securityUser;
         }
 

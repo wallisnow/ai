@@ -9,11 +9,11 @@ public interface SysRoleService {
 
     List<SysRole> findRoleList();
 
-    SysRole findSysRoleById(Long id) throws ResourceOperationException;
+    SysRole findSysRoleById(String id) throws ResourceOperationException;
 
     void create(SysRole role) throws ResourceOperationException;
 
     void update(SysRole role) throws ResourceOperationException;
 
-    void delete(Long id) throws ResourceOperationException;
+    void delete(String id) throws ResourceOperationException;
 }

@@ -96,11 +96,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()// 授权
                 .antMatchers("/index/**").anonymous()// 匿名用户权限
-                .antMatchers("/api/**").hasAnyRole(Constant.ROLE_SUPER_ADMIN, Constant.ROLE_ADMIN,
-                        Constant.ROLE_USER)//普通用户权限
-                .antMatchers("/sys/menu/all").hasAnyRole(Constant.ROLE_SUPER_ADMIN, Constant.ROLE_ADMIN,
-                        Constant.ROLE_USER)//普通用户
-                .antMatchers("/sys/menu/add").hasAnyRole(Constant.ROLE_SUPER_ADMIN, Constant.ROLE_ADMIN)//管理员
+
+                .antMatchers("/api/**")
+                .hasAnyRole(Constant.ROLE_SUPER_ADMIN, Constant.ROLE_ADMIN, Constant.ROLE_USER)//普通用户权限
+
+                .antMatchers("/sys/menu/all")
+                .hasAnyRole(Constant.ROLE_SUPER_ADMIN, Constant.ROLE_ADMIN, Constant.ROLE_USER)//普通用户
+
+                .antMatchers("/sys/menu/add")
+                .hasAnyRole(Constant.ROLE_SUPER_ADMIN, Constant.ROLE_ADMIN)//管理员
+
+                .antMatchers("/sys/role/**")
+                .hasAnyRole(Constant.ROLE_SUPER_ADMIN, Constant.ROLE_ADMIN)//管理员
+
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/login").permitAll()
                 //其他的需要授权后访问
