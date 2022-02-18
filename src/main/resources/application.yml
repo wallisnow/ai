@@ -44,9 +44,11 @@ jwt:
 
 logging:
     level:
-      root: INFO
+      com:
+          ai:
+              sys: DEBUG
       org:
-        springframework:
-          security: DEBUG
+        springframework: DEBUG
+#          security: DEBUG
         hibernate:
           type: trace

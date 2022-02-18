@@ -3,13 +3,14 @@ package com.ai.sys.config;
 import com.ai.sys.service.FileTransferService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class EventListenerCustomBean {

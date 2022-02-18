@@ -1,7 +1,7 @@
 package com.ai.sys.service;
 
 import com.ai.sys.config.Constant;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-@Log4j2
+@Slf4j
 @Service
 public class FileTransferServiceImpl implements FileTransferService {
 

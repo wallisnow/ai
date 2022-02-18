@@ -8,6 +8,7 @@ import com.ai.sys.model.entity.user.SysUser;
 import com.ai.sys.service.user.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 import static com.ai.sys.config.Constant.ROLE_USER;
 
-@Log4j2
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/register")

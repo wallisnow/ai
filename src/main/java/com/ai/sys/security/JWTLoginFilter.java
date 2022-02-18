@@ -7,6 +7,7 @@ import com.ai.sys.utils.ServletUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -24,7 +25,7 @@ import java.util.HashSet;
 /**
  * 自定义登录过滤器
  */
-@Log4j2
+@Slf4j
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     /**

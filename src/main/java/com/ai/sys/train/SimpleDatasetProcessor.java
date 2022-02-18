@@ -1,7 +1,7 @@
 package com.ai.sys.train;
 
 import lombok.NonNull;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-@Log4j2
+@Slf4j
 public class SimpleDatasetProcessor implements DatasetProcessor {
 
     private final static String PYTHON_EXECUTOR = "python";

@@ -5,6 +5,7 @@ import com.ai.sys.config.ConfigConstValue;
 import com.ai.sys.utils.JwtUtils;
 import com.ai.sys.utils.ServletUtils;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Log4j2
+@Slf4j
 public class SecurityAuthTokenFilter extends BasicAuthenticationFilter {
 
     public static final String DEFAULT_TOKEN_TYPE = "Bearer";

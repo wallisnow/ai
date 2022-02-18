@@ -4,6 +4,7 @@ import com.ai.sys.model.entity.sys.SysMenu;
 import com.ai.sys.model.entity.sys.SysRole;
 import com.ai.sys.repository.sys.SysRoleRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -12,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SysRoleMenuServiceImpl implements SysRoleMenuService {
@@ -25,7 +27,7 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
         if (!ObjectUtils.isEmpty(roles)) {
             roles.forEach(sysRole -> {
                 Set<SysMenu> menus = sysRole.getMenus();
-                if (!ObjectUtils.isEmpty(menus)){
+                if (!ObjectUtils.isEmpty(menus)) {
                     menus.forEach(sysMenu -> {
                         permissions.add(sysMenu.getPermissions());
                     });

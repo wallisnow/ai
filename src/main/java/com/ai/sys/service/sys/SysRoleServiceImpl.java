@@ -1,13 +1,14 @@
 package com.ai.sys.service.sys;
 
-import com.ai.sys.exception.ResourceOperationExceptionFactory;
 import com.ai.sys.exception.ResourceOperationException;
+import com.ai.sys.exception.ResourceOperationExceptionFactory;
 import com.ai.sys.model.entity.sys.SysMenu;
 import com.ai.sys.model.entity.sys.SysRole;
 import com.ai.sys.repository.sys.SysMenuRepository;
 import com.ai.sys.repository.sys.SysRoleRepository;
 import com.ai.sys.utils.ModelUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -17,6 +18,7 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SysRoleServiceImpl implements SysRoleService {
