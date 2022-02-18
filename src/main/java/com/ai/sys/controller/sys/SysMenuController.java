@@ -39,12 +39,12 @@ public class SysMenuController {
     public Response addMenu(@RequestBody SysMenu sysMenu) {
         try {
             sysMenuService.create(sysMenu);
-            return Response.ok();
+            return Response.httpOk();
         } catch (ResourceOperationException e) {
             log.debug("create menu failed");
-            return Response.error(e.getStatus().toString(), e.getMessage());
+            return Response.httpError(e.getStatus(), e.getMessage());
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            return Response.error(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e);
+            return Response.httpError(HttpStatus.INTERNAL_SERVER_ERROR, e);
         }
     }
 
@@ -52,13 +52,13 @@ public class SysMenuController {
     public Response updateMenu(@RequestBody SysMenu sysMenu) {
         try {
             sysMenuService.update(sysMenu);
-            return Response.ok("menu updated");
+            return Response.httpOk("menu updated");
         } catch (ResourceOperationException e) {
             log.debug("update menu failed");
-            return Response.error(e.getStatus().toString(), e);
+            return Response.httpError(e.getStatus(), e.getMessage());
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
-            return Response.error(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e);
+            return Response.httpError(HttpStatus.INTERNAL_SERVER_ERROR, e);
         }
     }
 }

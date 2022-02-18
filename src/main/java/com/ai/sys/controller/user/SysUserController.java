@@ -34,9 +34,9 @@ public class SysUserController {
     Response listAllUsers() {
         try {
             List<SysUser> all = sysUserService.findAll();
-            return Response.ok(all);
+            return Response.httpOk(all);
         } catch (ResourceOperationException e) {
-            return Response.error(e.getStatus().toString(), e);
+            return Response.httpError(e.getStatus(), e.getMessage());
         }
     }
 
@@ -51,19 +51,19 @@ public class SysUserController {
         try {
             sysUserService.create(newUser);
         } catch (ResourceOperationException e) {
-            return Response.error(e.getStatus().toString(), e);
+            return Response.httpError(e.getStatus(), e.getMessage());
         }
-        return Response.ok("User registration successful");
+        return Response.httpOk("User registration successful");
     }
 
     @PutMapping(value = "/modify", consumes = {"application/json"})
     public Response updateUser(@RequestBody SysUser user) {
         try {
             sysUserService.update(user);
-            return Response.ok("Update user successful");
+            return Response.httpOk("Update user successful");
         } catch (ResourceOperationException e) {
             log.debug("create category failed");
-            return Response.error(e.getStatus().toString(), e);
+            return Response.httpError(e.getStatus(), e.getMessage());
         }
     }
 }

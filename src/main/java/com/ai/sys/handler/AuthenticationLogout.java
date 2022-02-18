@@ -18,6 +18,6 @@ public class AuthenticationLogout implements LogoutSuccessHandler{
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        ServletUtils.render(request,response, Response.error("注销成功"));
+        ServletUtils.render(request,response, Response.httpOk("注销成功"));
     }
 }

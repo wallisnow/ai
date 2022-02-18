@@ -28,9 +28,9 @@ public class SysRoleController {
     Response listAllRoles() {
         try {
             List<SysRole> roleList = sysRoleService.findRoleList();
-            return Response.ok(roleList);
+            return Response.httpOk(roleList);
         } catch (ResourceOperationException e) {
-            return Response.error(e.getStatus().toString(), e);
+            return Response.httpError(e.getStatus(), e.getMessage());
         }
     }
 
@@ -38,10 +38,10 @@ public class SysRoleController {
     public Response addSysRole(@RequestBody SysRole sysRole) {
         try {
             sysRoleService.create(sysRole);
-            return Response.ok("Role Created");
+            return Response.httpOk("Role Created");
         } catch (ResourceOperationException e) {
             log.debug("create Role failed");
-            return Response.error(e.getStatus().toString(), e);
+            return Response.httpError(e.getStatus(), e.getMessage());
         }
     }
 
@@ -49,10 +49,10 @@ public class SysRoleController {
     public Response updateSysRole(@RequestBody SysRole sysRole) {
         try {
             sysRoleService.update(sysRole);
-            return Response.ok("Role updated");
+            return Response.httpOk("Role updated");
         } catch (ResourceOperationException e) {
             log.debug("update Role failed");
-            return Response.error(e.getStatus().toString(), e);
+            return Response.httpError(e.getStatus(), e.getMessage());
         }
     }
 
@@ -60,10 +60,10 @@ public class SysRoleController {
     public Response updateUser(@RequestBody SysUser user) {
         try {
             sysUserService.updateWithRole(user);
-            return Response.ok("update successful");
+            return Response.httpOk("update successful");
         } catch (ResourceOperationException e) {
             log.debug("update user failed");
-            return Response.error(e.getStatus().toString(), e);
+            return Response.httpError(e.getStatus(), e.getMessage());
         }
     }
 
@@ -71,10 +71,10 @@ public class SysRoleController {
     public Response deleteSysRole(@PathVariable("role") String role) {
         try {
             sysRoleService.delete(role);
-            return Response.ok("Deleted");
+            return Response.httpOk("Deleted");
         } catch (ResourceOperationException e) {
             log.debug(e.getStackTrace());
-            return Response.error(e.getStatus().toString(), e);
+            return Response.httpError(e.getStatus(), e.getMessage());
         }
     }
 }

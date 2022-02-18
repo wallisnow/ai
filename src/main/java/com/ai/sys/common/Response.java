@@ -1,71 +1,55 @@
 package com.ai.sys.common;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * 接口返回 module
  */
-public class Response extends HashMap<String, Object> {
+public class Response extends ResponseEntity<HashMap<String, Object>> {
 
-	private static final long serialVersionUID = 1L;
-	private static final String STATUS = "status";
-	private static final String MESSAGE = "message";
-	private static final String DATA = "data";
+    private static final long serialVersionUID = 1L;
 
-	public Response() {
-		put(STATUS, 200);
-		put(MESSAGE, "ok");
-	}
+    private static final String MESSAGE = "message";
+    private static final String DATA = "data";
 
-	public static Response error() {
-		return error("500", "系统错误，请联系管理员");
-	}
+    public Response(HttpStatus httpStatus) {
+        super(httpStatus);
+    }
 
-	public static Response error(String msg) {
-		return error("500", msg);
-	}
+    public Response(HashMap<String, Object> responseMap, HttpStatus httpStatus) {
+        super(responseMap, httpStatus);
+    }
 
-	public static Response error(String status, String msg) {
-		Response r = new Response();
-		r.put(STATUS, status);
-		r.put(MESSAGE, msg);
-		return r;
-	}
+    public static Response httpError(String msg) {
+        return httpError(HttpStatus.INTERNAL_SERVER_ERROR, msg);
+    }
 
-	public static Response error(ApiResultEnum resultEnum) {
-		Response r = new Response();
-		r.put(STATUS, resultEnum.getStatus());
-		r.put(MESSAGE, resultEnum.getMessage());
-		return r;
-	}
+    public static Response httpError(HttpStatus status, String msg) {
+        Map<String, Object> message = Map.of(MESSAGE, msg);
+        return new Response(put(message), status);
+    }
 
-	public static Response error(String status, Object data) {
-		Response r = new Response();
-		r.put(STATUS, status);
-		r.put(DATA,data);
-		return r;
-	}
+    public static Response httpError(HttpStatus status, Object data) {
+        return new Response(put(Map.of(DATA, data)), status);
+    }
 
-	public static Response ok(Map<String, Object> map) {
-		Response r = new Response();
-		r.putAll(map);
-		return r;
-	}
+    public static Response httpOk(Map<String, Object> map) {
+        return new Response(put(map), HttpStatus.OK);
+    }
 
-	public static Response ok(Object data) {
-		Response responce = new Response();
-		responce.put(DATA,data);
-		return responce;
-	}
+    public static Response httpOk(Object data) {
+        return new Response(put(Map.of(DATA, data)), HttpStatus.OK);
+    }
 
-	public static Response ok() {
-		return new Response();
-	}
+    public static Response httpOk() {
+        return new Response(HttpStatus.OK);
+    }
 
-	@Override
-	public Response put(String key, Object value) {
-		super.put(key, value);
-		return this;
-	}
+    public static HashMap<String, Object> put(Map<String, Object> map) {
+        return new HashMap<>(map);
+    }
 }

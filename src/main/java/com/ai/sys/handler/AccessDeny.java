@@ -2,6 +2,7 @@ package com.ai.sys.handler;
 
 import com.ai.sys.common.Response;
 import com.ai.sys.utils.ServletUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,6 @@ public class AccessDeny implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException {
-        ServletUtils.render(request, response, Response.error("无权访问"));
+        ServletUtils.render(request, response, Response.httpError(HttpStatus.FORBIDDEN,"无权访问"));
     }
 }

@@ -113,6 +113,6 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         else {
             result = "未知异常";
         }
-        ServletUtils.render(request, response, Response.error(result));
+        ServletUtils.render(request, response, Response.httpError(result));
     }
 }

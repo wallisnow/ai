@@ -33,7 +33,7 @@ public class SecurityAuthTokenFilter extends BasicAuthenticationFilter {
         if (StringUtils.hasLength(token)) {
             SecurityUser userInfo = JwtUtils.getUserInfoByToken(token);
             if (userInfo == null) {
-                ServletUtils.render(request, response, Response.error("Token is expired or invalid"));
+                ServletUtils.render(request, response, Response.httpError("Token is expired or invalid"));
                 return;
             }
             if (StringUtils.hasLength(userInfo.getUsername()) && SecurityContextHolder.getContext().getAuthentication() == null) {
