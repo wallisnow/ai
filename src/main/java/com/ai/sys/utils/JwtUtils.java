@@ -2,6 +2,7 @@ package com.ai.sys.utils;
 
 import com.ai.sys.security.SecurityUser;
 import io.jsonwebtoken.*;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;

@@ -3,6 +3,7 @@ package com.ai.sys.controller.user;
 
 import com.ai.sys.common.Response;
 import com.ai.sys.exception.ResourceOperationException;
+import com.ai.sys.model.entity.sys.SysMenu;
 import com.ai.sys.model.entity.sys.SysRole;
 import com.ai.sys.model.entity.user.SysUser;
 import com.ai.sys.service.sys.SysRoleService;

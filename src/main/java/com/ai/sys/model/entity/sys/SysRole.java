@@ -1,6 +1,7 @@
 package com.ai.sys.model.entity.sys;
 
 import com.ai.sys.model.entity.DateAudit;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,5 +31,6 @@ public class SysRole extends DateAudit {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "menu_id")
     )
+    @Builder.Default
     private Set<SysMenu> menus = new HashSet<>();
 }

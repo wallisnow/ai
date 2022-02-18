@@ -8,9 +8,11 @@ import com.ai.sys.model.entity.user.SysUser;
 import com.ai.sys.service.user.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.ai.sys.config.Constant.ROLE_USER;
@@ -27,6 +29,17 @@ public class SysUserController {
      */
     private final PasswordEncoder passwordEncoder;
 
+    @GetMapping("/all")
+    public @ResponseBody
+    Response listAllUsers() {
+        try {
+            List<SysUser> all = sysUserService.findAll();
+            return Response.ok(all);
+        } catch (ResourceOperationException e) {
+            return Response.error(e.getStatus().toString(), e);
+        }
+    }
+
     @PostMapping(value = "/new", consumes = {"application/json"})
     @ResponseBody
     public Response register(@RequestBody SysUser user) {
@@ -40,14 +53,14 @@ public class SysUserController {
         } catch (ResourceOperationException e) {
             return Response.error(e.getStatus().toString(), e);
         }
-        return Response.ok("注册成功");
+        return Response.ok("User registration successful");
     }
 
-    @PostMapping(value = "/update", consumes = {"application/json"})
+    @PutMapping(value = "/modify", consumes = {"application/json"})
     public Response updateUser(@RequestBody SysUser user) {
         try {
             sysUserService.update(user);
-            return Response.ok("修改成功");
+            return Response.ok("Update user successful");
         } catch (ResourceOperationException e) {
             log.debug("create category failed");
             return Response.error(e.getStatus().toString(), e);

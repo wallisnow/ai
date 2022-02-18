@@ -2,13 +2,13 @@ package com.ai.sys.common;
 
 public enum ApiResultEnum {
     SUCCESS("200", "ok"),
-    FAILED("400", "请求失败"),
-    ERROR("500", "服务繁忙"),
-    TOKEN_USER_INVALID("70000", "Token过期或用户未登录"),
+    FAILED("400", "Request fielded"),
+    ERROR("500", "Server busy"),
+    TOKEN_USER_INVALID("70000", "Token expired or no login"),
     ;
 
-    private String message;
-    private String status;
+    private final String message;
+    private final String status;
 
     public String getMessage() {
         return message;

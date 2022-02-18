@@ -33,18 +33,20 @@ spring:
         baseline-on-migrate: true
 
 login:
-  token-key: token
+    token-key: Authorization
+
 jwt:
-  # jwt密钥，验签需要
-  secret: rstyro2dcad64e9cbd542c5584f1103110e6ce2dcad64e9cbd542c5584rstyro
-  # 过期时间单位：分钟
-  expireTime: 30
-  subject: token
+    # jwt密钥，验签需要
+    secret: rstyro2dcad64e9cbd542c5584f1103110e6ce2dcad64e9cbd542c5584rstyro
+    # 过期时间单位：分钟
+    expireTime: 60
+    subject: token
 
 logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG
-      hibernate:
-        type: trace
+    level:
+      root: INFO
+      org:
+        springframework:
+          security: DEBUG
+        hibernate:
+          type: trace

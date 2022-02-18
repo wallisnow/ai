@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SysMenuService {
     List<SysMenu> getSysMenuList();
-    void create(SysMenu sysMenu) throws ResourceOperationException;
-    void update(SysMenu sysMenu) throws ResourceOperationException;
+    void create(SysMenu sysMenu) throws ResourceOperationException, NoSuchFieldException, IllegalAccessException;
+    void update(SysMenu sysMenu) throws ResourceOperationException, NoSuchFieldException, IllegalAccessException;
     void delete(Long id) throws ResourceOperationException;
 }

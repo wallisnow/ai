@@ -31,7 +31,6 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
                     });
                 }
             });
-
         }
         return permissions;
     }

@@ -1,9 +1,11 @@
 package com.ai.sys.security;
 
+import antlr.Token;
 import com.ai.sys.common.Response;
 import com.ai.sys.config.ConfigConstValue;
 import com.ai.sys.utils.JwtUtils;
 import com.ai.sys.utils.ServletUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -17,10 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * 这个进行token的认证拦截
- */
+@Log4j2
 public class SecurityAuthTokenFilter extends BasicAuthenticationFilter {
+
+    public static final String DEFAULT_TOKEN_TYPE = "Bearer";
 
     public SecurityAuthTokenFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -32,7 +34,7 @@ public class SecurityAuthTokenFilter extends BasicAuthenticationFilter {
         if (StringUtils.hasLength(token)) {
             SecurityUser userInfo = JwtUtils.getUserInfoByToken(token);
             if (userInfo == null) {
-                ServletUtils.render(request, response, Response.error("Token过期或无效"));
+                ServletUtils.render(request, response, Response.error("Token is expired or invalid"));
                 return;
             }
             if (StringUtils.hasLength(userInfo.getUsername()) && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -44,7 +46,7 @@ public class SecurityAuthTokenFilter extends BasicAuthenticationFilter {
                     SecurityContext context = SecurityContextHolder.getContext();
                     // 指示用户已通过身份验证
                     context.setAuthentication(authentication);
-                    System.out.println("authorite=" + authentication.getAuthorities().toString());
+                    log.debug("authority=" + authentication.getAuthorities().toString());
                 }
             }
         }
@@ -52,16 +54,11 @@ public class SecurityAuthTokenFilter extends BasicAuthenticationFilter {
         filterChain.doFilter(request, response);
     }
 
-    /**
-     * 从header或者参数中获取token
-     *
-     * @return token
-     */
     public String getToken(HttpServletRequest request) {
-        String token = request.getHeader(ConfigConstValue.TOKEN);
-        if (!StringUtils.hasLength(token)) {
-            token = request.getParameter(ConfigConstValue.TOKEN);
+        String bearerToken = request.getHeader(ConfigConstValue.TOKEN);
+        if (!StringUtils.hasLength(bearerToken)) {
+            bearerToken = request.getParameter(ConfigConstValue.TOKEN);
         }
-        return token;
+        return bearerToken;
     }
 }
