@@ -27,15 +27,15 @@ public class JwtUtils {
     /**
      * 过期时间 毫秒
      */
-    private static Long EXPIRE_TIME=300000l;
+    private static Long EXPIRE_TIME= 300000L;
 
     /**
      * 主题订阅
      */
     private static String SUBJECT = "token";
 
-    private static String ROLE_KEY = "roles";
-    private static String USERNAME_KEY = "username";
+    private static final String ROLE_KEY = "roles";
+    private static final String USERNAME_KEY = "username";
 
     @Value("${jwt.secret}")
     public void setJwtSecretKey(String jwtSecretKey) {
@@ -109,7 +109,7 @@ public class JwtUtils {
      * 解析token
      */
     public static SecurityUser getUserInfoByToken(String token)  {
-        Set<GrantedAuthority> authoritiesSet = new HashSet();
+        Set<GrantedAuthority> authoritiesSet = new HashSet<>();
         Optional<Claims> claimsOptional = parseToken(token);
         if(claimsOptional.isPresent()){
             Claims claims = claimsOptional.get();
@@ -155,19 +155,15 @@ public class JwtUtils {
      */
     public static boolean isExpiration(String jwsToken){
         Optional<Claims> claims = parseToken(jwsToken);
-        if(claims.isPresent()){
-            return claims.get().getExpiration().before(new Date());
-        }
-        return true;
+        return claims.map(value -> value.getExpiration().before(new Date())).orElse(true);
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         String line = "[user:list, user:list:edit, user:list:del, ROLE_test, user:list:add, user:list:query]";
         System.out.println(line.substring(1,line.length()-1));
         String[] split = line.replace("[","").replace("]","").split(",");
         System.out.println(split.length);
         System.out.println(split[0]);
-
     }
 
 }

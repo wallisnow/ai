@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 /**
  * 自定义认证逻辑
  */
-@Component
+//@Component
 public class SelfAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired

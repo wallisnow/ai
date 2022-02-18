@@ -1,6 +1,5 @@
 package com.ai.sys.security;
 
-import antlr.Token;
 import com.ai.sys.common.Response;
 import com.ai.sys.config.ConfigConstValue;
 import com.ai.sys.utils.JwtUtils;
