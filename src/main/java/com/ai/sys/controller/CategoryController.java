@@ -52,7 +52,7 @@ public class CategoryController {
             categoryService.delete(name);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            log.error(e.getStackTrace());
+            log.error(String.valueOf(e.getStackTrace()));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
