@@ -69,12 +69,12 @@ public class SysRoleController {
     }
 
     @DeleteMapping("/delete/{role}")
-    public Response deleteSysRole(@PathVariable("role") String role) {
+    public Response deleteSysRole(@PathVariable("role") Long role) {
         try {
             sysRoleService.delete(role);
             return Response.httpOk("Deleted");
         } catch (ResourceOperationException e) {
-            log.debug(e.getStackTrace());
+            log.debug(String.valueOf(e.getStackTrace()));
             return Response.httpError(e.getStatus(), e.getMessage());
         }
     }

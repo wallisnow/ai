@@ -4,5 +4,5 @@ import java.util.Collection;
 import java.util.Set;
 
 public interface SysRoleMenuService {
-    Set<String> getPermissionsByRoleNames(Collection<String> roleNames);
+    Set<String> getPermissionsByRoleNames(Collection<Long> roleNames);
 }

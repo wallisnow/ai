@@ -32,7 +32,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public SysRole findSysRoleById(String id) throws ResourceOperationException {
+    public SysRole findSysRoleById(Long id) throws ResourceOperationException {
         return sysRoleRepository.findById(id)
                 .orElseThrow(() -> ResourceOperationException.builder()
                         .resourceName("role")
@@ -42,8 +42,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     public void create(SysRole role) throws ResourceOperationException {
-        String roleName = role.getRoleName();
-        Optional<SysRole> roleOptional = sysRoleRepository.findById(roleName);
+        Optional<SysRole> roleOptional = sysRoleRepository.findById(role.getId());
         if (roleOptional.isPresent()) {
             throw ResourceOperationException.builder()
                     .resourceName("role")
@@ -51,7 +50,7 @@ public class SysRoleServiceImpl implements SysRoleService {
                     .status(HttpStatus.FOUND)
                     .build();
         }
-        role.setRoleName(roleName.toLowerCase(Locale.ROOT));
+        role.setRoleName(role.getRoleName().toLowerCase(Locale.ROOT));
         //new role has no menu
         role.setMenus(Set.of());
         sysRoleRepository.save(role);
@@ -59,7 +58,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     public void update(SysRole role) throws ResourceOperationException {
-        SysRole roleToUpdate = sysRoleRepository.findById(role.getRoleName())
+        SysRole roleToUpdate = sysRoleRepository.findById(role.getId())
                 .orElseThrow(() -> ResourceOperationException.builder()
                         .resourceName("role")
                         .message("role not found")
@@ -92,7 +91,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
-    public void delete(String id) throws ResourceOperationException {
+    public void delete(Long id) throws ResourceOperationException {
         sysRoleRepository.deleteById(id);
     }
 }

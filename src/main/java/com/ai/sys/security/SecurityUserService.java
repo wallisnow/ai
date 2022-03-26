@@ -60,7 +60,7 @@ public class SecurityUserService implements UserDetailsService {
         Set<SysRole> roles = user.getRoles();
 
         if (!ObjectUtils.isEmpty(roles)) {
-            Set<String> roleNames = roles.stream().map(SysRole::getRoleName).collect(Collectors.toSet());
+            Set<Long> roleNames = roles.stream().map(SysRole::getId).collect(Collectors.toSet());
             Set<String> rolePermissions = sysRoleMenuService.getPermissionsByRoleNames(roleNames);
 
             // 添加 角色权限
