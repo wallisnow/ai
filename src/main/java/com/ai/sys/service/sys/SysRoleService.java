@@ -11,6 +11,8 @@ public interface SysRoleService {
 
     SysRole findSysRoleById(Long id) throws ResourceOperationException;
 
+    SysRole findSysRoleByRoleName(String roleName) throws ResourceOperationException;
+
     void create(SysRole role) throws ResourceOperationException;
 
     void update(SysRole role) throws ResourceOperationException;

@@ -41,6 +41,14 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
+    public SysRole findSysRoleByRoleName(String roleName) throws ResourceOperationException {
+        return sysRoleRepository.findSysRoleByRoleName(roleName).orElseThrow(() -> ResourceOperationException.builder()
+                .resourceName("role")
+                .message("role not found")
+                .status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @Override
     public void create(SysRole role) throws ResourceOperationException {
         Optional<SysRole> roleOptional = sysRoleRepository.findById(role.getId());
         if (roleOptional.isPresent()) {

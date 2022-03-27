@@ -5,6 +5,7 @@ import com.ai.sys.common.Response;
 import com.ai.sys.exception.ResourceOperationException;
 import com.ai.sys.model.entity.sys.SysRole;
 import com.ai.sys.model.entity.user.SysUser;
+import com.ai.sys.service.sys.SysRoleService;
 import com.ai.sys.service.user.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,6 +26,7 @@ import static com.ai.sys.config.Constant.ROLE_USER;
 public class SysUserController {
 
     private final SysUserService sysUserService;
+    private final SysRoleService sysRoleService;
     /**
      * spring security 加密方式
      */
@@ -44,10 +46,11 @@ public class SysUserController {
     @PostMapping(value = "/new", consumes = {"application/json"})
     @ResponseBody
     public Response register(@RequestBody SysUser user) {
+        SysRole userRole = sysRoleService.findSysRoleByRoleName(ROLE_USER);
         SysUser newUser = SysUser.builder()
                 .username(user.getUsername())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .roles(Set.of(SysRole.builder().roleName(ROLE_USER).roleDesc(ROLE_USER).build()))
+                .roles(Set.of(userRole))
                 .build();
         try {
             sysUserService.create(newUser);

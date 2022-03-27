@@ -24,14 +24,12 @@ public class SysMenuController {
 
     @GetMapping("/all")
     public @ResponseBody
-    ResponseEntity<List<SysMenu>> findMenu() {
+    Response findMenu() {
         try {
             List<SysMenu> sysMenuList = sysMenuService.getSysMenuList();
-            return ResponseEntity.ok(sysMenuList);
+            return Response.httpOk(sysMenuList);
         } catch (ResourceOperationException e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(null);
+            return Response.httpError(HttpStatus.NOT_FOUND, e);
         }
     }
 

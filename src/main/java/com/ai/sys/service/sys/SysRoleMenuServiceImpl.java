@@ -21,7 +21,7 @@ public class SysRoleMenuServiceImpl implements SysRoleMenuService {
     private final SysRoleRepository sysRoleRepository;
 
     @Override
-    public Set<String> getPermissionsByRoleNames(Collection<Long> roleIds) {
+    public Set<String> getPermissionsByRoleIds(Collection<Long> roleIds) {
         List<SysRole> roles = sysRoleRepository.findAllById(roleIds);
         Set<String> permissions = new HashSet<>();
         if (!ObjectUtils.isEmpty(roles)) {

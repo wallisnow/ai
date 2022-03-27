@@ -2,7 +2,9 @@ package com.ai.sys.service;
 
 import com.ai.sys.exception.ResourceOperationException;
 import com.ai.sys.model.entity.Algo;
+import com.ai.sys.model.entity.AlgoType;
 import com.ai.sys.repository.AlgoRepository;
+import com.ai.sys.repository.AlgoTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AlgoServiceImpl implements AlgoService {
     private final AlgoRepository algoRepository;
+    private final AlgoTypeRepository algoTypeRepository;
 
     public void create(Algo algo) throws ResourceOperationException {
         try {
@@ -37,7 +40,17 @@ public class AlgoServiceImpl implements AlgoService {
                 .status(HttpStatus.NOT_FOUND)
                 .message("Algorithm cannot be found")
                 .build());
+
+        AlgoType algoType = algo.getAlgoType();
         Algo algoToUpdate = byId.get();
+
+        //update algo type if not null
+        Optional.ofNullable(algoType).ifPresent(
+                typeObjToUse -> {
+                    AlgoType typeToUse = algoTypeRepository.getById(typeObjToUse.getName());
+                    algoToUpdate.setAlgoType(typeToUse);
+                }
+        );
         algoToUpdate.setName(algo.getName());
         algoToUpdate.setDescription(algo.getDescription());
         algoToUpdate.setPath(algo.getPath());

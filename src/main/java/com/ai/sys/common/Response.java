@@ -24,6 +24,14 @@ public class Response extends ResponseEntity<HashMap<String, Object>> {
         super(responseMap, httpStatus);
     }
 
+    public static Response httpWith(HttpStatus httpStatus){
+        return new Response(httpStatus);
+    }
+
+    public static Response httpError() {
+        return new Response(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     public static Response httpError(String msg) {
         return httpError(HttpStatus.INTERNAL_SERVER_ERROR, msg);
     }
@@ -43,6 +51,10 @@ public class Response extends ResponseEntity<HashMap<String, Object>> {
 
     public static Response httpOk(Object data) {
         return new Response(put(Map.of(DATA, data)), HttpStatus.OK);
+    }
+
+    public static Response httpOk(String msg) {
+        return new Response(put(Map.of(MESSAGE, msg)), HttpStatus.OK);
     }
 
     public static Response httpOk() {

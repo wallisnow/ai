@@ -13,7 +13,7 @@ import javax.persistence.*;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
-public class Algo extends DateAudit{
+public class Algo extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -24,7 +24,7 @@ public class Algo extends DateAudit{
     private String path;
     private String description;
 
-    @ManyToOne(cascade={CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "algotype_name")
     private AlgoType algoType;
 }

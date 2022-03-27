@@ -1,5 +1,6 @@
 package com.ai.sys.controller;
 
+import com.ai.sys.common.Response;
 import com.ai.sys.exception.ResourceOperationException;
 import com.ai.sys.model.entity.Algo;
 import com.ai.sys.service.AlgoService;
@@ -27,78 +28,70 @@ public class AlgoController {
     @GetMapping("/{name}")
     //@PreAuthorize("hasAuthority('DEVELOPER')")
     public @ResponseBody
-    ResponseEntity<Algo> findAlgoByName(@PathVariable("name") String name) {
+    Response findAlgoByName(@PathVariable("name") String name) {
         try {
             Algo anAlgoByName = algoService.findAnAlgoByName(name);
-            return ResponseEntity.ok(anAlgoByName);
+            return Response.httpOk(anAlgoByName);
         } catch (ResourceOperationException e) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body(null);
+            return Response.httpError(HttpStatus.NOT_FOUND, e);
         }
     }
 
     @PostMapping(value = "/script", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     //@PreAuthorize("hasAnyAuthority('ASSISTANT_MANAGER', 'MANAGER', 'ADMIN')")
-    public ResponseEntity<String> addAlgoWithFile(@RequestPart("algo") Algo algo, @RequestPart("file") MultipartFile file) {
+    public Response addAlgoWithFile(@RequestPart("algo") Algo algo, @RequestPart("file") MultipartFile file) {
         try {
             String algoScriptPath = fileTransferService.save(file);
             algo.setPath(algoScriptPath);
             algoService.create(algo);
-            return ResponseEntity
-                    .ok()
-                    .body("Algo created, and algo script path is: " + file.getOriginalFilename());
+            String msg = "Algo created, and algo script path is: " + file.getOriginalFilename();
+            return Response.httpOk(msg);
         } catch (ResourceOperationException e) {
             log.debug("create algo failed");
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+            return Response.httpError(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Could not upload the file: " + file.getOriginalFilename() + "!");
+            String msg = "Could not upload the file: " + file.getOriginalFilename() + "!";
+            return Response.httpError(HttpStatus.BAD_REQUEST, msg);
         }
     }
 
     @PostMapping(value = "/add", consumes = {"application/json"})
-    public ResponseEntity<String> addAlgo(@RequestBody Algo algo) {
+    public Response addAlgo(@RequestBody Algo algo) {
         try {
             algoService.create(algo);
-            return ResponseEntity.ok().build();
+            return Response.httpOk();
         } catch (ResourceOperationException e) {
             log.debug("create algo failed");
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+            return Response.httpError(HttpStatus.BAD_REQUEST, e);
         }
     }
 
     @DeleteMapping("/{name}")
-    public ResponseEntity<HttpStatus> deleteAlgo(@PathVariable("name") String name) {
+    public Response deleteAlgo(@PathVariable("name") String name) {
         try {
             Algo anAlgoByName = algoService.findAnAlgoByName(name);
             if (Objects.isNull(anAlgoByName)) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                String msg = "cannot find this role name";
+                return Response.httpError(msg);
             } else {
                 algoService.deleteAlgoById(anAlgoByName.getId());
+                return Response.httpWith(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return Response.httpError();
         }
     }
 
     @PutMapping(value = "/", consumes = {"application/json"})
-    public ResponseEntity<String> modifyAlgo(@RequestBody Algo algo) {
+    public Response modifyAlgo(@RequestBody Algo algo) {
         try {
             algoService.update(algo);
-            return ResponseEntity.ok().build();
+            return Response.httpOk();
         } catch (ResourceOperationException e) {
             log.debug("update Algo failed");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+            return Response.httpError();
         }
     }
 }
