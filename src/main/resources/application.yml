@@ -3,9 +3,14 @@ spring:
         password: admin2021
         url: jdbc:postgresql://localhost:5432/ai
         username: dbuser
+#    sql:
+#        init:
+#            mode: always
     jpa:
         hibernate:
             ddl-auto: update
+#            initialization-mode: always
+#            defer-datasource-initialization: true
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
