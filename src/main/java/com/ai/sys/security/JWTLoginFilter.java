@@ -1,6 +1,7 @@
 package com.ai.sys.security;
 
 import com.ai.sys.common.Response;
+import com.ai.sys.common.ResponseWrapper;
 import com.ai.sys.model.LoginEntry;
 import com.ai.sys.utils.JwtUtils;
 import com.ai.sys.utils.ServletUtils;
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.filters.AddDefaultCharsetFilter;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,7 +22,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 /**
  * 自定义登录过滤器
@@ -73,8 +77,13 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
                 .setUsername(principal.getUsername())
                 .setAuthorities(new HashSet<>(principal.getAuthorities())));
         try {
+            //TODO ResponseResultHandlerAdvice 无法拦截此处的返回值，暂时hardcode
             //登录成功時，返回json格式进行提示
-            ServletUtils.render(request, response, Response.ok(token));
+            Map dataMap = new HashMap<>();
+            dataMap.put("token", token);
+            ServletUtils.render(request, response,
+                    new ResponseWrapper(20000,"成功", dataMap)
+            );
         } catch (Exception e1) {
             e1.printStackTrace();
         }
