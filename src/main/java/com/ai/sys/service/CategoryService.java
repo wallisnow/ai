@@ -5,6 +5,6 @@ import com.ai.sys.model.entity.Category;
 
 public interface CategoryService {
     void create(Category category) throws ResourceOperationException;
-    void delete(String name) throws ResourceOperationException;
-    Category find(String name) throws ResourceOperationException;
+    void delete(Long id) throws ResourceOperationException;
+    Category find(Long id) throws ResourceOperationException;
 }

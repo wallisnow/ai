@@ -25,6 +25,6 @@ public class DataSet extends DateAudit {
     private String path;
 
     @ManyToOne(cascade={CascadeType.MERGE})
-    @JoinColumn(name = "category_name")
+    @JoinColumn(name = "category_id")
     private Category category;
 }

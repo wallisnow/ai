@@ -20,11 +20,11 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/{name}")
+    @GetMapping("/{id}")
     public @ResponseBody
-    ResponseEntity<Category> findCategoryByName(@PathVariable("name") String name) {
+    ResponseEntity<Category> findCategoryByName(@PathVariable("id") Long id) {
         try {
-            Category category = categoryService.find(name);
+            Category category = categoryService.find(id);
             return ResponseEntity.ok(category);
         } catch (ResourceOperationException e) {
             return ResponseEntity
@@ -46,10 +46,10 @@ public class CategoryController {
         }
     }
 
-    @DeleteMapping("/{name}")
-    public ResponseEntity<HttpStatus> deleteCategory(@PathVariable("name") String name) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteCategory(@PathVariable("id") Long id) {
         try {
-            categoryService.delete(name);
+            categoryService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             log.error(String.valueOf(e.getStackTrace()));

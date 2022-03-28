@@ -33,7 +33,7 @@ public class ResponseResultHandlerAdvice implements ResponseBodyAdvice {
                         new ResponseWrapper(
                                 20000,
                                 "成功",
-                                ((Map)body).get("data")
+                                body instanceof Map ? ((Map)body).get("data"): body
                         );
                 return responseResult;
             }

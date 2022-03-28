@@ -21,13 +21,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void delete(String name) throws ResourceOperationException {
-        categoryRepository.deleteById(name);
+    public void delete(Long id) throws ResourceOperationException {
+        categoryRepository.deleteById(id);
     }
 
     @Override
-    public Category find(String name) throws ResourceOperationException {
-        Optional<Category> byId = categoryRepository.findById(name);
+    public Category find(Long id) throws ResourceOperationException {
+        Optional<Category> byId = categoryRepository.findById(id);
         byId.orElseThrow(() -> ResourceOperationException.builder()
                 .status(HttpStatus.NOT_FOUND)
                 .resourceName("Category")
