@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,5 +36,10 @@ public class CategoryServiceImpl implements CategoryService {
                 .message("Category cannot be found!")
                 .build());
         return byId.get();
+    }
+
+    @Override
+    public List<Category> findAll() throws ResourceOperationException {
+        return new ArrayList<>(categoryRepository.findAll());
     }
 }

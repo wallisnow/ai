@@ -4,6 +4,7 @@ package com.ai.sys.controller;
 import com.ai.sys.exception.ResourceOperationException;
 import com.ai.sys.model.entity.Algo;
 import com.ai.sys.model.entity.Category;
+import com.ai.sys.model.entity.DataSet;
 import com.ai.sys.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -55,5 +58,10 @@ public class CategoryController {
             log.error(String.valueOf(e.getStackTrace()));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/all")
+    public List<Category> findAllCategorySet() {
+        return categoryService.findAll();
     }
 }

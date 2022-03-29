@@ -27,6 +27,7 @@ public class SysUser extends DateAudit {
     @Column(unique = true)
     private String username;
     private String password;
+    private String repoKey;
 
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(

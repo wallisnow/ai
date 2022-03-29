@@ -26,6 +26,11 @@ public class DataSetController {
     private final DataSetService dataSetService;
     private final FileTransferService fileTransferService;
 
+    @GetMapping("/all")
+    public List<DataSet> findAllDataSet() {
+        return dataSetService.findAll();
+    }
+
     @GetMapping("/{id}")
     public @ResponseBody
     DataSet findDataSetById(@PathVariable("id") long id) {
@@ -95,10 +100,4 @@ public class DataSetController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @GetMapping("/all")
-    public List<DataSet> findAllDataSet() {
-        return dataSetService.findAll();
-    }
-
 }
