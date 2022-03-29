@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -60,9 +61,16 @@ public class AlgoServiceImpl implements AlgoService {
         algoRepository.save(algoToUpdate);
     }
 
-    public Algo findAnAlgoByName(String name) throws ResourceOperationException{
-        Optional<Algo> byName = algoRepository.findByName(name);
+    public Algo findAnAlgoById(Long id) throws ResourceOperationException{
+        Optional<Algo> byName = algoRepository.findById(id);
         byName.orElseThrow(()-> ResourceOperationException.builder().build());
         return byName.get();
+    }
+
+    @Override
+    public List<Algo> findAnAlgoByUserId(Long userid) throws ResourceOperationException {
+        Optional<List<Algo>> bySysUser_id = algoRepository.findAlgoBySysUser_Id(userid);
+        bySysUser_id.orElseThrow(()-> ResourceOperationException.builder().build());
+        return bySysUser_id.get();
     }
 }

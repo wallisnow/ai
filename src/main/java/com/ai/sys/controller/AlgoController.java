@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -25,13 +26,25 @@ public class AlgoController {
     private final AlgoService algoService;
     private final FileTransferService fileTransferService;
 
-    @GetMapping("/{name}")
+//    @GetMapping("/{name}")
+//    //@PreAuthorize("hasAuthority('DEVELOPER')")
+//    public @ResponseBody
+//    Response findAlgoByName(@PathVariable("name") Long id) {
+//        try {
+//            Algo anAlgoByName = algoService.findAnAlgoByName(id);
+//            return Response.httpOk(anAlgoByName);
+//        } catch (ResourceOperationException e) {
+//            return Response.httpError(HttpStatus.NOT_FOUND, e);
+//        }
+//    }
+
+    @GetMapping("/list/{userid}")
     //@PreAuthorize("hasAuthority('DEVELOPER')")
     public @ResponseBody
-    Response findAlgoByName(@PathVariable("name") String name) {
+    Response findAlgoByUserId(@PathVariable("userid") Long userid) {
         try {
-            Algo anAlgoByName = algoService.findAnAlgoByName(name);
-            return Response.httpOk(anAlgoByName);
+            List<Algo> anAlgoById = algoService.findAnAlgoByUserId(userid);
+            return Response.httpOk(anAlgoById);
         } catch (ResourceOperationException e) {
             return Response.httpError(HttpStatus.NOT_FOUND, e);
         }
@@ -67,10 +80,10 @@ public class AlgoController {
         }
     }
 
-    @DeleteMapping("/{name}")
-    public Response deleteAlgo(@PathVariable("name") String name) {
+    @DeleteMapping("/{id}")
+    public Response deleteAlgo(@PathVariable("id") Long id) {
         try {
-            Algo anAlgoByName = algoService.findAnAlgoByName(name);
+            Algo anAlgoByName = algoService.findAnAlgoById(id);
             if (Objects.isNull(anAlgoByName)) {
                 String msg = "cannot find this role name";
                 return Response.httpError(msg);

@@ -1,5 +1,6 @@
 package com.ai.sys.model.entity;
 
+import com.ai.sys.model.entity.user.SysUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -24,11 +25,15 @@ public class Algo extends DateAudit {
     private String path;
     private String description;
 
-//    @ManyToOne(cascade = {CascadeType.MERGE})
-//    @JoinColumn(name = "algotype_id")
-//    private AlgoType algoType;
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "userid")
+    private SysUser sysUser;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "category_id")
-    private Category category;
+    @JoinColumn(name = "dataset_id")
+    private DataSet dataSet;
+
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "repository_id")
+    private Repository repository;
 }
