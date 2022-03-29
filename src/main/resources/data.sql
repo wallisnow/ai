@@ -4,7 +4,7 @@ ON CONFLICT (role_name) DO NOTHING;
 
 
 
-INSERT INTO algo VALUES (1, '2022-01-01 00:00:00', '2022-01-01 00:00:00', 'test1', 'test1', '/test/1', 1);
+INSERT INTO algo VALUES (1, '2022-01-01 00:00:00', '2022-01-01 00:00:00', 'test1', 'test1', '/test/1', 1, 1, 1);
 
 
 INSERT INTO category VALUES (1, '2022-01-01 00:00:00', '2022-01-01 00:00:00', '图像识别', '图像识别');
@@ -22,8 +22,11 @@ INSERT INTO sys_menu VALUES (1, '2022-01-01 00:00:00', '2022-01-01 00:00:00', 1,
 INSERT INTO sys_role VALUES (1, '2022-01-01 00:00:00', '2022-01-01 00:00:00', 'admin', 'ADMIN');
 
 
-INSERT INTO sys_user VALUES (1, '2022-01-01 00:00:00', '2022-01-01 00:00:00', '$2a$10$Dh2dAqCB6Wkq2MoEU738L.B/12JJbOiXjPY/8/9LVWDBEdOf18OFq', 'tester');
+INSERT INTO sys_user VALUES (1, '2022-01-01 00:00:00', '2022-01-01 00:00:00', '$2a$10$Dh2dAqCB6Wkq2MoEU738L.B/12JJbOiXjPY/8/9LVWDBEdOf18OFq', 'key123321key', 'tester');
 
 
 INSERT INTO user_role VALUES (1, 1);
+
+
+INSERT INTO repository VALUES (1, '2022-01-01 00:00:00', '2022-01-01 00:00:00', '行为分析', 'https://gitee.com/academy/drivermonitor-action');
 
