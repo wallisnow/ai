@@ -64,3 +64,4 @@ workspace:
     upload: /Users/liujun/Desktop/AI/uploads
     result: /Users/liujun/Desktop/AI/results
     resultsuffix: .res
+    sourcesuffix: .zip
