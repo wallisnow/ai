@@ -1,5 +1,6 @@
 package com.ai.sys.train;
 
+import com.ai.sys.model.entity.Algo;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,10 +22,10 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
     private final static String PARAM_SPLITER = " ";
 
     @Override
-    public void process(@NonNull String algoPath, List<String> params, @NonNull String datasetPath) throws InterruptedException, IOException, ExecutionException {
+    public void process(@NonNull Algo algo, List<String> params) {
         List<String> paramList = Optional.ofNullable(params).orElseGet(ArrayList::new);
-        paramList.add(datasetPath);
-        ProcessBuilder processBuilder = new ProcessBuilder(PYTHON_EXECUTOR, algoPath, String.join(PARAM_SPLITER, paramList));
+        paramList.add(algo.getDataSet().getPath());
+        ProcessBuilder processBuilder = new ProcessBuilder(PYTHON_EXECUTOR, algo.getPath(), String.join(PARAM_SPLITER, paramList));
         processBuilder.redirectErrorStream(true);
 
         CompletableFuture.runAsync(() -> {
