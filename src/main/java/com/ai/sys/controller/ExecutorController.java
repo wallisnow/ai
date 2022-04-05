@@ -1,6 +1,8 @@
 package com.ai.sys.controller;
 
 import com.ai.sys.model.Command;
+import com.ai.sys.model.entity.Algo;
+import com.ai.sys.service.AlgoService;
 import com.ai.sys.train.DatasetProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,19 +20,27 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("/api/v1/exec")
 public class ExecutorController {
     private final DatasetProcessor datasetProcessor;
+    private final AlgoService algoService;
 
     @PostMapping("/algo")
     public @ResponseBody
     ResponseEntity<HttpStatus> execute(@RequestBody Command command) {
         try {
-            datasetProcessor.process(command.getAlgoPath(), command.getParams(), command.getDataSetPath());
+            algoService.updateCompleteStatus(command.getAlgo().getId(), false);
+            datasetProcessor.process(command.getAlgo(), command.getParams());
             return ResponseEntity.accepted().build();
         } catch (InterruptedException | IOException e) {
+            setAlgoToCompleted(command.getAlgo().getId());
             log.debug(e.getLocalizedMessage());
             return ResponseEntity.internalServerError().build();
         } catch (ExecutionException e) {
+            setAlgoToCompleted(command.getAlgo().getId());
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    private void setAlgoToCompleted(final Long id){
+        algoService.updateCompleteStatus(id,true);
     }
 }

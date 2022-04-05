@@ -53,12 +53,28 @@ public class AlgoServiceImpl implements AlgoService {
 //                }
 //        );
 
-        Algo algoToUpdate = byId.get();
+        // TODO jun: 为啥要复制一个algo去更新？
+//        Algo algoToUpdate = byId.get();
+//
+//        algoToUpdate.setName(algo.getName());
+//        algoToUpdate.setDescription(algo.getDescription());
+//        algoToUpdate.setPath(algo.getPath());
+//        algoRepository.save(algoToUpdate);
 
-        algoToUpdate.setName(algo.getName());
-        algoToUpdate.setDescription(algo.getDescription());
-        algoToUpdate.setPath(algo.getPath());
-        algoRepository.save(algoToUpdate);
+        algoRepository.save(algo);
+    }
+
+    @Override
+    public void updateCompleteStatus(Long id, boolean isCompleted) {
+        //TODO jun: 用exist是不是更好？
+        Optional<Algo> byId = algoRepository.findById(id);
+        byId.orElseThrow(() -> ResourceOperationException.builder()
+                .resourceName("Algorithm")
+                .status(HttpStatus.NOT_FOUND)
+                .message("Algorithm cannot be found")
+                .build());
+
+        algoRepository.updateAlgoCompletionById(id, isCompleted);
     }
 
     public Algo findAnAlgoById(Long id) throws ResourceOperationException{

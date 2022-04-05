@@ -16,4 +16,6 @@ public interface AlgoService {
     void deleteAlgoById(long id);
 
     void update(Algo algo);
+
+    void updateCompleteStatus(Long id, boolean isCompleted);
 }
