@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,4 +37,10 @@ public class Algo extends DateAudit {
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "repository_id")
     private Repository repository;
+
+    private Boolean isCompleted;
+
+    @OneToMany
+    @JoinColumn(name = "algoid")
+    private List<AlgoResult> algoResults;
 }

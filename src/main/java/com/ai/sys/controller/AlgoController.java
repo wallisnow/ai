@@ -26,17 +26,17 @@ public class AlgoController {
     private final AlgoService algoService;
     private final FileTransferService fileTransferService;
 
-//    @GetMapping("/{name}")
-//    //@PreAuthorize("hasAuthority('DEVELOPER')")
-//    public @ResponseBody
-//    Response findAlgoByName(@PathVariable("name") Long id) {
-//        try {
-//            Algo anAlgoByName = algoService.findAnAlgoByName(id);
-//            return Response.httpOk(anAlgoByName);
-//        } catch (ResourceOperationException e) {
-//            return Response.httpError(HttpStatus.NOT_FOUND, e);
-//        }
-//    }
+    @GetMapping("/{id}")
+    //@PreAuthorize("hasAuthority('DEVELOPER')")
+    public @ResponseBody
+    Response findAlgoById(@PathVariable("id") Long id) {
+        try {
+            Algo anAlgoByName = algoService.findAnAlgoById(id);
+            return Response.httpOk(anAlgoByName);
+        } catch (ResourceOperationException e) {
+            return Response.httpError(HttpStatus.NOT_FOUND, e);
+        }
+    }
 
     @GetMapping("/list/{userid}")
     //@PreAuthorize("hasAuthority('DEVELOPER')")
