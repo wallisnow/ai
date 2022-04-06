@@ -4,10 +4,12 @@ import com.ai.sys.model.entity.Algo;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.util.FileSystemUtils;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -18,8 +20,14 @@ import java.util.zip.ZipInputStream;
 @Slf4j
 public class SimpleDatasetProcessor implements DatasetProcessor {
 
-    @Value("workspace.algo")
+    @Value("${workspace.algo}")
     private String algoDir;
+
+    @Value("${workspace.result}")
+    private String resultDir;
+
+    @Value("${workspace.resultsuffix}")
+    private String resultSuffix;
 
     private final static String PYTHON_EXECUTOR = "python";
     private final static String PARAM_SPLITER = " ";
@@ -34,9 +42,12 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
             log.error(e.getMessage());
         }
 
-        List<String> paramList = Optional.ofNullable(params).orElseGet(ArrayList::new);
-        paramList.add(algo.getDataSet().getPath());
-        ProcessBuilder processBuilder = new ProcessBuilder(PYTHON_EXECUTOR, algo.getPath(), String.join(PARAM_SPLITER, paramList));
+        ProcessBuilder processBuilder =
+                new ProcessBuilder(
+                        PYTHON_EXECUTOR,
+                        algoDir+'/'+algo.getId()+"/main.py",        // main path
+                        algo.getDataSet().getPath(),                // dataset path
+                        resultDir+"/"+algo.getId()+resultSuffix);   // result path
         processBuilder.redirectErrorStream(true);
 
         CompletableFuture.runAsync(() -> {

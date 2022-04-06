@@ -60,7 +60,7 @@ logging:
 
 workspace:
     algo: /Users/liujun/Desktop/AI/algos
-    dataset: /Users/liujun/Desktop/AI/algos
+    dataset: /Users/liujun/Desktop/AI/datasets
     upload: /Users/liujun/Desktop/AI/uploads
     result: /Users/liujun/Desktop/AI/results
     resultsuffix: .res
