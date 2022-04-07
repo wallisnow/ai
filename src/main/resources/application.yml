@@ -63,5 +63,6 @@ workspace:
     dataset: /Users/liujun/Desktop/AI/datasets
     upload: /Users/liujun/Desktop/AI/uploads
     result: /Users/liujun/Desktop/AI/results
+    model: /Users/liujun/Desktop/AI/models
     resultsuffix: .res
     sourcesuffix: .zip
