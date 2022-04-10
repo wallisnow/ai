@@ -28,10 +28,6 @@ public class DataSetServiceImpl implements DataSetService {
                         .build());
     }
 
-//    public List<DataSet> findByTags(List<String> tags) {
-//        return dataSetRepository.findByTagNameIn(tags);
-//    }
-
     @Override
     public List<DataSet> findByName(String name) {
         return dataSetRepository.findByName(name);
