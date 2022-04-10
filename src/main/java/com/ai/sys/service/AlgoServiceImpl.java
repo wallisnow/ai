@@ -57,7 +57,10 @@ public class AlgoServiceImpl implements AlgoService {
 
     public Algo findAnAlgoById(Long id) throws ResourceOperationException{
         Optional<Algo> byName = algoRepository.findById(id);
-        byName.orElseThrow(()-> ResourceOperationException.builder().build());
+        byName.orElseThrow(()-> ResourceOperationException.builder()
+                .message("算法不存在!")
+                .status(HttpStatus.NOT_FOUND)
+                .build());
         return byName.get();
     }
 

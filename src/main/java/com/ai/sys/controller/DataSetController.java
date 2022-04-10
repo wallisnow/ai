@@ -1,12 +1,9 @@
 package com.ai.sys.controller;
 
-import com.ai.sys.exception.ResourceOperationException;
-import com.ai.sys.model.entity.Algo;
 import com.ai.sys.model.entity.DataSet;
 import com.ai.sys.service.DataSetService;
 import com.ai.sys.service.FileTransferService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -44,7 +41,7 @@ public class DataSetController {
     }
 
 
-    @PostMapping(value = "/simples", consumes = {MediaType.APPLICATION_JSON_VALUE,MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/simples", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> addAlgoWithFile(@RequestPart("dataset") DataSet dataSet, @RequestPart("file") MultipartFile file) {
         try {
             String algoScriptPath = fileTransferService.save(file);
@@ -53,11 +50,6 @@ public class DataSetController {
             return ResponseEntity
                     .ok()
                     .body("Dataset created, and algo script path is: " + algoScriptPath);
-        } catch (ResourceOperationException e) {
-            log.debug("create dataset failed");
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity
@@ -68,26 +60,14 @@ public class DataSetController {
 
     @PostMapping(value = "/add", consumes = {"application/json"})
     public ResponseEntity<String> addDataSet(@RequestBody DataSet dataSet) {
-        try {
-            dataSetService.create(dataSet);
-            return ResponseEntity.ok().build();
-        } catch (ResourceOperationException e) {
-            log.debug("create dataset failed");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
-        }
+        dataSetService.create(dataSet);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping(value = "/", consumes = {"application/json"})
     public ResponseEntity<String> modifyDataSet(@RequestBody DataSet dataSet) {
-        try {
-            dataSetService.update(dataSet);
-            return ResponseEntity.ok().build();
-        } catch (ResourceOperationException e) {
-            log.debug("update dataset failed");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
-        }
+        dataSetService.update(dataSet);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{name}")

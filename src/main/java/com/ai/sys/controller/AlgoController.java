@@ -1,7 +1,6 @@
 package com.ai.sys.controller;
 
 import com.ai.sys.common.Response;
-import com.ai.sys.exception.ResourceOperationException;
 import com.ai.sys.model.entity.Algo;
 import com.ai.sys.service.AlgoService;
 import com.ai.sys.service.FileTransferService;
@@ -29,24 +28,16 @@ public class AlgoController {
     //@PreAuthorize("hasAuthority('DEVELOPER')")
     public @ResponseBody
     Response findAlgoById(@PathVariable("id") Long id) {
-        try {
-            Algo anAlgoByName = algoService.findAnAlgoById(id);
-            return Response.httpOk(anAlgoByName);
-        } catch (ResourceOperationException e) {
-            return Response.httpError(HttpStatus.NOT_FOUND, e);
-        }
+        Algo anAlgoByName = algoService.findAnAlgoById(id);
+        return Response.httpOk(anAlgoByName);
     }
 
     @GetMapping("/list/{userid}")
     //@PreAuthorize("hasAuthority('DEVELOPER')")
     public @ResponseBody
     Response findAlgoByUserId(@PathVariable("userid") Long userid) {
-        try {
-            List<Algo> anAlgoById = algoService.findAnAlgoByUserId(userid);
-            return Response.httpOk(anAlgoById);
-        } catch (ResourceOperationException e) {
-            return Response.httpError(HttpStatus.NOT_FOUND, e);
-        }
+        List<Algo> anAlgoById = algoService.findAnAlgoByUserId(userid);
+        return Response.httpOk(anAlgoById);
     }
 
     @PostMapping(value = "/script", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -58,9 +49,6 @@ public class AlgoController {
             algoService.create(algo);
             String msg = "Algo created, and algo script path is: " + file.getOriginalFilename();
             return Response.httpOk(msg);
-        } catch (ResourceOperationException e) {
-            log.debug("create algo failed");
-            return Response.httpError(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
             String msg = "Could not upload the file: " + file.getOriginalFilename() + "!";
@@ -70,13 +58,8 @@ public class AlgoController {
 
     @PostMapping(value = "/add", consumes = {"application/json"})
     public Response addAlgo(@RequestBody Algo algo) {
-        try {
-            algoService.create(algo);
-            return Response.httpOk();
-        } catch (ResourceOperationException e) {
-            log.debug("create algo failed");
-            return Response.httpError(HttpStatus.BAD_REQUEST, e);
-        }
+        algoService.create(algo);
+        return Response.httpOk();
     }
 
     @DeleteMapping("/{id}")
@@ -98,12 +81,7 @@ public class AlgoController {
 
     @PutMapping(value = "/", consumes = {"application/json"})
     public Response modifyAlgo(@RequestBody Algo algo) {
-        try {
-            algoService.update(algo);
-            return Response.httpOk();
-        } catch (ResourceOperationException e) {
-            log.debug("update Algo failed");
-            return Response.httpError();
-        }
+        algoService.update(algo);
+        return Response.httpOk();
     }
 }
