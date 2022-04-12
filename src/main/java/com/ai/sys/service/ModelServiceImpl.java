@@ -1,10 +1,14 @@
 package com.ai.sys.service;
 
+import com.ai.sys.exception.ResourceOperationException;
 import com.ai.sys.model.Model;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -17,14 +21,21 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class ModelServiceImpl implements ModelService {
+
     @Value("${workspace.model}")
     private String modelDir;
+
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public List<Model> findAll() {
         List<Model> models = new ArrayList<Model>();
         populateDirectoryContent(models, Paths.get(modelDir));
         return models;
+    }
+
+    @Override
+    public boolean deleteByPath(String path) throws ResourceOperationException, IOException {
+        return FileSystemUtils.deleteRecursively(Paths.get(path));
     }
 
     private void populateDirectoryContent(List<Model> parent, Path parentPath) {

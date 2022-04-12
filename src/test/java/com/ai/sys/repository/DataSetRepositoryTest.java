@@ -52,15 +52,4 @@ class DataSetRepositoryTest extends RepositoryTest {
         dataSetRepository.deleteAll();
     }
 
-    @Test
-    void findByName() {
-        categoryRepository.saveAndFlush(imageCategory);
-        dataSetRepository.save(dataSet);
-        List<DataSet> byName = dataSetRepository.findByName(TEST_DATASET_NAME);
-
-        Assertions.assertNotNull(byName);
-        Assertions.assertEquals(1, byName.size());
-        Assertions.assertEquals(TEST_DATASET_PATH, byName.get(0).getPath());
-    }
-
 }

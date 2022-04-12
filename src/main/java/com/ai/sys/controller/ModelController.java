@@ -1,14 +1,12 @@
 package com.ai.sys.controller;
 
+import com.ai.sys.common.Response;
 import com.ai.sys.model.Model;
 import com.ai.sys.service.ModelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,11 +26,25 @@ public class ModelController {
         return modelService.findAll();
     }
 
+    @DeleteMapping("/delete/**")
+    public Response deleteModel(HttpServletRequest request) {
+        try {
+            String path = request.getRequestURI().split(request.getContextPath() + "/delete/")[1];
+            boolean ok = modelService.deleteByPath(path);
+            if (ok) {
+                return Response.httpOk("删除成功");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Response.httpError("删除失败， 请确认文件是否存在");
+    }
+
     //TODO jun: to improve
     @RequestMapping("/download/{path}")
     public void downloadPDFResource(HttpServletRequest request, HttpServletResponse response,
                                     @PathVariable("path") String path) throws IOException {
-        File file = new File(path.replaceAll("\\+","/"));
+        File file = new File(path.replaceAll("\\+", "/"));
         if (file.exists()) {
 
             //get the mimetype
