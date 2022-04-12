@@ -3,9 +3,7 @@ package com.ai.sys.service;
 import com.ai.sys.exception.ResourceOperationException;
 import com.ai.sys.model.entity.Algo;
 import com.ai.sys.repository.AlgoRepository;
-import com.ai.sys.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -34,18 +32,21 @@ public class AlgoServiceImpl implements AlgoService {
     }
 
     public void update(Algo algo) {
-        Optional<Algo> byId = algoRepository.findById(algo.getId());
-        byId.orElseThrow(() -> ResourceOperationException.builder()
-                .resourceName("Algorithm")
-                .status(HttpStatus.NOT_FOUND)
-                .message("Algorithm cannot be found")
-                .build());
-        algoRepository.save(algo);
+        boolean exists = algoRepository.existsById(algo.getId());
+        if (exists) {
+            algoRepository.save(algo);
+        } else {
+            throw ResourceOperationException.builder()
+                    .resourceName("Algorithm")
+                    .status(HttpStatus.NOT_FOUND)
+                    .message("Algorithm cannot be found")
+                    .build();
+        }
     }
 
     @Override
     public void updateCompleteStatus(Long id, boolean isCompleted) {
-        if (!algoRepository.existsById(id)){
+        if (!algoRepository.existsById(id)) {
             throw ResourceOperationException.builder()
                     .resourceName("Algorithm")
                     .status(HttpStatus.NOT_FOUND)
@@ -55,9 +56,9 @@ public class AlgoServiceImpl implements AlgoService {
         algoRepository.updateAlgoCompletionById(id, isCompleted);
     }
 
-    public Algo findAnAlgoById(Long id) throws ResourceOperationException{
+    public Algo findAnAlgoById(Long id) throws ResourceOperationException {
         Optional<Algo> byName = algoRepository.findById(id);
-        byName.orElseThrow(()-> ResourceOperationException.builder()
+        byName.orElseThrow(() -> ResourceOperationException.builder()
                 .message("算法不存在!")
                 .status(HttpStatus.NOT_FOUND)
                 .build());
@@ -66,8 +67,8 @@ public class AlgoServiceImpl implements AlgoService {
 
     @Override
     public List<Algo> findAnAlgoByUserId(Long userid) throws ResourceOperationException {
-        Optional<List<Algo>> bySysUser_id = algoRepository.findAlgoBySysUser_Id(userid);
-        bySysUser_id.orElseThrow(()-> ResourceOperationException.builder().build());
-        return bySysUser_id.get();
+        Optional<List<Algo>> bySysUserId = algoRepository.findAlgoBySysUser_Id(userid);
+        bySysUserId.orElseThrow(() -> ResourceOperationException.builder().build());
+        return bySysUserId.get();
     }
 }

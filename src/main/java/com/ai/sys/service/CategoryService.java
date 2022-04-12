@@ -10,4 +10,5 @@ public interface CategoryService {
     void delete(Long id) throws ResourceOperationException;
     Category find(Long id) throws ResourceOperationException;
     List<Category> findAll() throws ResourceOperationException;
+    void update(Category category) throws ResourceOperationException;
 }

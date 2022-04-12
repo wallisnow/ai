@@ -42,4 +42,18 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> findAll() throws ResourceOperationException {
         return new ArrayList<>(categoryRepository.findAll());
     }
+
+    @Override
+    public void update(Category category) throws ResourceOperationException {
+        boolean exists = categoryRepository.existsById(category.getId());
+        if (exists) {
+            categoryRepository.save(category);
+        } else {
+            throw ResourceOperationException.builder()
+                    .resourceName("Category")
+                    .status(HttpStatus.NOT_FOUND)
+                    .message("Category cannot be found")
+                    .build();
+        }
+    }
 }

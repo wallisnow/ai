@@ -1,6 +1,8 @@
 package com.ai.sys.controller;
 
 
+import com.ai.sys.common.Response;
+import com.ai.sys.model.entity.Algo;
 import com.ai.sys.model.entity.Category;
 import com.ai.sys.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,12 @@ public class CategoryController {
     public ResponseEntity<HttpStatus> deleteCategory(@PathVariable("id") Long id) {
         categoryService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(value = "/modify", consumes = {"application/json"})
+    public Response modifyCategory(@RequestBody Category category) {
+        categoryService.update(category);
+        return Response.httpOk();
     }
 
     @GetMapping("/all")
