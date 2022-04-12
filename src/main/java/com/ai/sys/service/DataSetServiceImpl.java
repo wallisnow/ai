@@ -1,7 +1,7 @@
 package com.ai.sys.service;
 
 import com.ai.sys.exception.ResourceOperationException;
-import com.ai.sys.model.entity.Category;
+import com.ai.sys.exception.ResourceOperationExceptionFactory;
 import com.ai.sys.model.entity.DataSet;
 import com.ai.sys.repository.DataSetRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ai.sys.exception.ResourceOperationExceptionFactory.*;
+
 @Service
 @RequiredArgsConstructor
 public class DataSetServiceImpl implements DataSetService {
@@ -21,16 +23,7 @@ public class DataSetServiceImpl implements DataSetService {
     public DataSet findById(long id) {
         return dataSetRepository
                 .findById(id)
-                .orElseThrow(() -> ResourceOperationException.builder()
-                        .resourceName(DataSet.class.getName())
-                        .message("data set cannot be found!")
-                        .status(HttpStatus.NOT_FOUND)
-                        .build());
-    }
-
-    @Override
-    public List<DataSet> findByName(String name) {
-        return dataSetRepository.findByName(name);
+                .orElseThrow(() -> createDataSetException("Cannot found dataset", HttpStatus.BAD_REQUEST));
     }
 
     @Override
@@ -38,40 +31,28 @@ public class DataSetServiceImpl implements DataSetService {
         try {
             dataSetRepository.save(dataSet);
         } catch (Exception e) {
-            throw ResourceOperationException
-                    .builder()
-                    .resourceName(DataSet.class.getName())
-                    .message(e.getMessage())
-                    .status(HttpStatus.BAD_REQUEST)
-                    .build();
+            throw createDataSetException("Create dataset failed", HttpStatus.BAD_REQUEST);
         }
     }
 
     @Override
     @Transactional
-    public void deleteByName(String name) {
-        dataSetRepository.deleteByName(name);
+    public void deleteById(Long id) {
+        if (dataSetRepository.existsById(id)) {
+            dataSetRepository.deleteById(id);
+        } else {
+            throw createDataSetException("Cannot found dataset", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Override
     public void update(DataSet dataSet) throws ResourceOperationException {
-        List<DataSet> byName = dataSetRepository.findByName(dataSet.getName());
-        if (byName.isEmpty()) {
-            throw ResourceOperationException
-                    .builder()
-                    .resourceName(DataSet.class.getName())
-                    .message(dataSet.getName() + " does not exit!")
-                    .status(HttpStatus.NOT_FOUND)
-                    .build();
+        boolean exists = dataSetRepository.existsById(dataSet.getId());
+        if (exists) {
+            dataSetRepository.save(dataSet);
+        } else {
+            throw createDataSetException(dataSet.getName() + " does not exit!", HttpStatus.NOT_FOUND);
         }
-        DataSet updateDataSet = byName.get(0);
-        updateDataSet.setName(dataSet.getName());
-        updateDataSet.setPath(dataSet.getPath());
-        //updateDataSet.setTags(dataSet.getTags());
-        updateDataSet.setCategory(Category.builder()
-                .name(dataSet.getCategory().getName())
-                .build());
-        dataSetRepository.save(updateDataSet);
     }
 
     public List<DataSet> findAll() {

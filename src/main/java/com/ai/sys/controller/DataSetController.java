@@ -1,5 +1,6 @@
 package com.ai.sys.controller;
 
+import com.ai.sys.common.Response;
 import com.ai.sys.model.entity.DataSet;
 import com.ai.sys.service.DataSetService;
 import com.ai.sys.service.FileTransferService;
@@ -34,12 +35,6 @@ public class DataSetController {
         return dataSetService.findById(id);
     }
 
-    @GetMapping("/")
-    public @ResponseBody
-    List<DataSet> findDataSetByName(@RequestParam("name") String name) {
-        return dataSetService.findByName(name);
-    }
-
 
     @PostMapping(value = "/simples", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<String> addAlgoWithFile(@RequestPart("dataset") DataSet dataSet, @RequestPart("file") MultipartFile file) {
@@ -64,20 +59,15 @@ public class DataSetController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "/", consumes = {"application/json"})
-    public ResponseEntity<String> modifyDataSet(@RequestBody DataSet dataSet) {
+    @PutMapping(value = "/modify", consumes = {"application/json"})
+    public Response modifyDataSet(@RequestBody DataSet dataSet) {
         dataSetService.update(dataSet);
-        return ResponseEntity.ok().build();
+        return Response.httpOk();
     }
 
-    @DeleteMapping("/{name}")
-    public ResponseEntity<HttpStatus> deleteDataSet(@PathVariable("name") String name) {
-        try {
-            dataSetService.deleteByName(name);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @DeleteMapping("/{id}")
+    public Response deleteDataSet(@PathVariable("id") Long id) {
+        dataSetService.deleteById(id);
+        return Response.httpOk();
     }
 }

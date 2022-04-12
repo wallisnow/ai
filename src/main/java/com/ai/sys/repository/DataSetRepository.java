@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface DataSetRepository extends JpaRepository<DataSet, Long> {
-    List<DataSet> findByName(@NonNull String name);
 
     void deleteByName(@NonNull String name);
 

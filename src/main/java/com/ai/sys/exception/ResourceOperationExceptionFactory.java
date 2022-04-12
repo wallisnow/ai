@@ -19,4 +19,12 @@ public class ResourceOperationExceptionFactory {
                 .resourceName("USER")
                 .build();
     }
+
+    public static ResourceOperationException createDataSetException(String message, HttpStatus status){
+        return  ResourceOperationException.builder()
+                .message(message)
+                .status(status)
+                .resourceName("DataSet")
+                .build();
+    }
 }
