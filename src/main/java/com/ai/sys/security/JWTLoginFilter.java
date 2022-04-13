@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -69,7 +68,6 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
      * 登录成功返回 token
      */
     @Override
-    @Transactional
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) {
         SecurityUser principal = (SecurityUser) auth.getPrincipal();
         log.debug("authority=" + principal.getAuthorities().toString());
