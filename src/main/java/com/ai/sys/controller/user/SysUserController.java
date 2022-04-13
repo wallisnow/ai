@@ -70,4 +70,5 @@ public class SysUserController {
             return Response.httpError(e.getStatus(), e.getMessage());
         }
     }
+
 }

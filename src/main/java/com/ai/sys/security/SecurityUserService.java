@@ -1,6 +1,7 @@
 package com.ai.sys.security;
 
 import com.ai.sys.config.Constant;
+import com.ai.sys.model.entity.sys.SysMenu;
 import com.ai.sys.model.entity.sys.SysRole;
 import com.ai.sys.model.entity.user.SysUser;
 import com.ai.sys.service.sys.SysRoleMenuService;
@@ -14,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.HashSet;
@@ -51,6 +53,7 @@ public class SecurityUserService implements UserDetailsService {
     }
 
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<SysUser> userOptional = userService.findUserByUsername(username);
         SysUser user = userOptional.orElseThrow(() -> new UsernameNotFoundException("用户名或密码错误！！"));
@@ -58,6 +61,7 @@ public class SecurityUserService implements UserDetailsService {
         //获取用户权限，并把其添加到GrantedAuthority中
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         Set<SysRole> roles = user.getRoles();
+        Set<SysMenu> menus = new HashSet<>();
 
         if (!ObjectUtils.isEmpty(roles)) {
             Set<Long> roleIds = roles.stream().map(SysRole::getId).collect(Collectors.toSet());
@@ -77,6 +81,10 @@ public class SecurityUserService implements UserDetailsService {
                 GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.trim());
                 grantedAuthorities.add(grantedAuthority);
             });
+
+            menus = roles.stream()
+                    .flatMap(sysRole -> sysRole.getMenus().stream())
+                    .collect(Collectors.toSet());
         }
 
         //Remove this !!!
@@ -84,14 +92,16 @@ public class SecurityUserService implements UserDetailsService {
             SecurityUser securityUser = new SecurityUser();
             securityUser.setUsername(user.getUsername())
                     .setPassword(user.getPassword())
-                    .setAuthorities(Set.of(new SimpleGrantedAuthority("ROLE_" + Constant.ROLE_SUPER_ADMIN)));
+                    .setAuthorities(Set.of(new SimpleGrantedAuthority("ROLE_" + Constant.ROLE_SUPER_ADMIN)))
+                    .setSysMenus(menus);
             return securityUser;
         }
 
         SecurityUser securityUser = new SecurityUser();
         securityUser.setUsername(user.getUsername())
                 .setPassword(user.getPassword())
-                .setAuthorities(grantedAuthorities);
+                .setAuthorities(grantedAuthorities)
+                .setSysMenus(menus);
         return securityUser;
     }
 }

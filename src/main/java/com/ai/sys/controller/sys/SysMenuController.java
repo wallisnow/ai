@@ -24,7 +24,7 @@ public class SysMenuController {
 
     @GetMapping("/all")
     public @ResponseBody
-    Response findMenu() {
+    Response findAllMenus() {
         try {
             List<SysMenu> sysMenuList = sysMenuService.getSysMenuList();
             return Response.httpOk(sysMenuList);

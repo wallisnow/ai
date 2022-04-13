@@ -1,5 +1,6 @@
 package com.ai.sys.security;
 
+import com.ai.sys.model.entity.sys.SysMenu;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -30,7 +31,7 @@ public class SecurityUser implements UserDetails {
     /**
      * 自定义字段
      */
-    private String nickName;
+    private Set<SysMenu> sysMenus;
 
     public SecurityUser(String password, String username, Set<GrantedAuthority> authorities) {
         this.password = password;
@@ -38,11 +39,11 @@ public class SecurityUser implements UserDetails {
         this.authorities = authorities;
     }
 
-    public SecurityUser(String password, String username, Set<GrantedAuthority> authorities, String nickName) {
+    public SecurityUser(String password, String username, Set<GrantedAuthority> authorities, Set<SysMenu> sysMenus) {
         this.password = password;
         this.username = username;
         this.authorities = authorities;
-        this.nickName = nickName;
+        this.sysMenus = sysMenus;
     }
 
     @Override

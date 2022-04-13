@@ -4,8 +4,11 @@ import com.ai.sys.config.Constant;
 import com.ai.sys.handler.AccessDeny;
 import com.ai.sys.handler.AnonymousAuthenticationEntryPoint;
 import com.ai.sys.handler.AuthenticationLogout;
+import com.ai.sys.service.sys.SysMenuService;
+import com.ai.sys.service.user.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,7 +20,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 @EnableWebSecurity
 //开启权限注解,默认是关闭的
@@ -32,6 +40,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private AccessDeny accessDeny;
     // 自定义用户认证service
     private SecurityUserService securityUserService;
+
+    private SysUserService sysUserService;
+
+    @Autowired
+    public void setSysMenuService(SysUserService sysUserService) {
+        this.sysUserService = sysUserService;
+    }
 
     @Autowired
     public void setAnonymousAuthenticationEntryPoint(AnonymousAuthenticationEntryPoint anonymousAuthenticationEntryPoint) {
@@ -121,11 +136,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutSuccessHandler(authenticationLogout)
                 .and()
-                .addFilterBefore(new JWTLoginFilter("/login",
-                                authenticationManager()),
-                        UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new SecurityAuthTokenFilter(authenticationManager()),
-                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTLoginFilter("/login", authenticationManager(), sysUserService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new SecurityAuthTokenFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
                 // 设置Session的创建策略为：Spring Security不创建HttpSession
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

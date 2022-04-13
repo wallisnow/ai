@@ -1,28 +1,25 @@
 package com.ai.sys.security;
 
 import com.ai.sys.common.Response;
-import com.ai.sys.common.ResponseWrapper;
 import com.ai.sys.model.LoginEntry;
+import com.ai.sys.service.user.SysUserService;
 import com.ai.sys.utils.JwtUtils;
 import com.ai.sys.utils.ServletUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.filters.AddDefaultCharsetFilter;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import top.lrshuai.encryption.MDUtil;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -32,15 +29,18 @@ import java.util.Map;
 @Slf4j
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
+    private SysUserService sysUserService;
+
     /**
      * 父类的构造方法
      *
      * @param defaultFilterProcessesUrl 默认需要过滤的 url
      * @param authenticationManager     权限管理器
      */
-    public JWTLoginFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager) {
+    public JWTLoginFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager, SysUserService sysUserService) {
         super(new AntPathRequestMatcher(defaultFilterProcessesUrl));
         setAuthenticationManager(authenticationManager);
+        this.sysUserService = sysUserService;
     }
 
 
@@ -69,21 +69,17 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
      * 登录成功返回 token
      */
     @Override
+    @Transactional
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication auth) {
         SecurityUser principal = (SecurityUser) auth.getPrincipal();
-        //System.out.println("authorite=" + principal.getAuthorities().toString());
-        log.debug("authorite=" + principal.getAuthorities().toString());
+        log.debug("authority=" + principal.getAuthorities().toString());
         String token = JwtUtils.generateKey(new SecurityUser()
                 .setUsername(principal.getUsername())
                 .setAuthorities(new HashSet<>(principal.getAuthorities())));
         try {
             //TODO ResponseResultHandlerAdvice 无法拦截此处的返回值，暂时hardcode
             //登录成功時，返回json格式进行提示
-            Map dataMap = new HashMap<>();
-            dataMap.put("token", token);
-            ServletUtils.render(request, response,
-                    new ResponseWrapper(20000,"成功", dataMap)
-            );
+            ServletUtils.render(request, response, Response.httpOk(Map.of("token", token, "menu", principal.getSysMenus())));
         } catch (Exception e1) {
             e1.printStackTrace();
         }

@@ -73,6 +73,6 @@ public class SysMenu extends DateAudit {
     @JsonBackReference
     private SysMenu parent;
 
-    @OneToMany(mappedBy="parent")
+    @OneToMany(mappedBy="parent", fetch = FetchType.EAGER)
     private List<SysMenu> submenus;
 }
