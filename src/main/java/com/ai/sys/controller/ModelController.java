@@ -29,7 +29,7 @@ public class ModelController {
     @DeleteMapping("/delete/**")
     public Response deleteModel(HttpServletRequest request) {
         try {
-            String path = request.getRequestURI().split(request.getContextPath() + "/delete/")[1];
+            String path = request.getRequestURI().split(request.getContextPath() + "/delete")[1];
             boolean ok = modelService.deleteByPath(path);
             if (ok) {
                 return Response.httpOk("删除成功");

@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @RequiredArgsConstructor
 public class Category extends DateAudit {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
