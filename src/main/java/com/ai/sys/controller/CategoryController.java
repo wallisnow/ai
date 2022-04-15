@@ -29,15 +29,15 @@ public class CategoryController {
     }
 
     @PostMapping(value = "/add", consumes = {"application/json"})
-    public ResponseEntity<String> addCategory(@RequestBody Category category) {
+    public Response addCategory(@RequestBody Category category) {
         categoryService.create(category);
-        return ResponseEntity.ok().build();
+        return Response.httpOk();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteCategory(@PathVariable("id") Long id) {
+    public Response deleteCategory(@PathVariable("id") Long id) {
         categoryService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return Response.httpOk();
     }
 
     @PutMapping(value = "/modify", consumes = {"application/json"})

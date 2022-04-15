@@ -54,9 +54,9 @@ public class DataSetController {
     }
 
     @PostMapping(value = "/add", consumes = {"application/json"})
-    public ResponseEntity<String> addDataSet(@RequestBody DataSet dataSet) {
+    public Response addDataSet(@RequestBody DataSet dataSet) {
         dataSetService.create(dataSet);
-        return ResponseEntity.ok().build();
+        return Response.httpOk();
     }
 
     @PutMapping(value = "/modify", consumes = {"application/json"})
