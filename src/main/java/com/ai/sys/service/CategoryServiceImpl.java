@@ -39,6 +39,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Optional<Category> findByName(String name) throws ResourceOperationException {
+        return categoryRepository.findByName(name);
+    }
+
+    @Override
     public List<Category> findAll() throws ResourceOperationException {
         return new ArrayList<>(categoryRepository.findAll());
     }

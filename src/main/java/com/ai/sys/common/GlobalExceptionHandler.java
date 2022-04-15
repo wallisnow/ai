@@ -19,8 +19,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = ResourceOperationException.class)
     @ResponseBody
     public Response resourceExceptionHandler(ResourceOperationException e) {
-        log.debug("发生业务异常！原因是：{}", e.getLocalizedMessage());
-        return Response.httpError(e.getStatus(), e.getMessage());
+        log.debug("发生业务异常！原因是：{}", e.getMessage());
+        return Response.httpError(40000, e.getMessage());
     }
 
     /**

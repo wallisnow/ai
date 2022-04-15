@@ -15,6 +15,7 @@ public class Response extends ResponseEntity<HashMap<String, Object>> {
 
     private static final String MESSAGE = "message";
     private static final String DATA = "data";
+    private static final String CODE = "code";
 
     public Response(HttpStatus httpStatus) {
         super(httpStatus);
@@ -24,7 +25,7 @@ public class Response extends ResponseEntity<HashMap<String, Object>> {
         super(responseMap, httpStatus);
     }
 
-    public static Response httpWith(HttpStatus httpStatus){
+    public static Response httpWith(HttpStatus httpStatus) {
         return new Response(httpStatus);
     }
 
@@ -47,6 +48,19 @@ public class Response extends ResponseEntity<HashMap<String, Object>> {
 
     public static Response httpError(HttpStatus status, String msg, Object data) {
         Map<String, Object> message = Map.of(MESSAGE, msg, DATA, data);
+        return new Response(put(message), status);
+    }
+
+    public static Response httpError(int code, String msg) {
+        return httpError(HttpStatus.OK, code, msg, "");
+    }
+
+    public static Response httpError(int code, String msg, Object data) {
+            return httpError(HttpStatus.OK, code, msg, data);
+    }
+
+    public static Response httpError(HttpStatus status, int code, String msg, Object data) {
+        Map<String, Object> message = Map.of(CODE, code, MESSAGE, msg, DATA, data);
         return new Response(put(message), status);
     }
 
