@@ -33,6 +33,13 @@ public class DataSetServiceImpl implements DataSetService {
     @Override
     public void create(DataSet dataSet) throws ResourceOperationException {
         try {
+            Optional.ofNullable(dataSet.getCategory())
+                    .ifPresent(category -> {
+                        String name = category.getName();
+                        Category inDb = categoryService.findByName(name)
+                                .orElseThrow(() -> createDataSetException("类别 category " + category.getName() + "不存在，请先添加类别!", HttpStatus.NOT_FOUND));
+                        dataSet.setCategory(inDb);
+                    });
             dataSetRepository.save(dataSet);
         } catch (Exception e) {
             throw createDataSetException("Create dataset failed", HttpStatus.BAD_REQUEST);
