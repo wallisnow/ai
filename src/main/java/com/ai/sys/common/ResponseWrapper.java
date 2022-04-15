@@ -21,4 +21,8 @@ public class ResponseWrapper implements Serializable {
      */
     private Object data;
 
+    public ResponseWrapper(int code, String msg) {
+        this.code = code;
+        this.message = msg;
+    }
 }

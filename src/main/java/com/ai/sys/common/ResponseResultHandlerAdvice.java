@@ -32,12 +32,20 @@ public class ResponseResultHandlerAdvice implements ResponseBodyAdvice<Object> {
                 // TODO
                 //  1.需要对Error做同样的处理
                 //  2.需要优化下面的代码，例如返回body的值，而不是写死
-                ResponseWrapper responseResult =
-                        new ResponseWrapper(
-                                20000,
-                                "成功",
-                                body instanceof Map ? ((Map)body).get("data"): body
-                        );
+                ResponseWrapper responseResult = new ResponseWrapper(
+                        20000,
+                        "成功"
+                );
+
+                if(body != null) {
+                    if(body instanceof  Map){
+                        Object data = ((Map) body).get("data");
+                        if(body != null)
+                            responseResult.setData(data);
+                    }else
+                        responseResult.setData(body);
+                }
+
                 return responseResult;
             }
         }
