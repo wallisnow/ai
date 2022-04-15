@@ -40,9 +40,9 @@ public class AlgoController {
         return Response.httpOk(anAlgoById);
     }
 
-    @PostMapping(value = "/script", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/script", consumes = {MediaType.MULTIPART_MIXED_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     //@PreAuthorize("hasAnyAuthority('ASSISTANT_MANAGER', 'MANAGER', 'ADMIN')")
-    public Response addAlgoWithFile(@RequestPart("algo") Algo algo, @RequestPart("file") MultipartFile file) {
+    public Response addAlgoWithFile(Algo algo, @RequestParam("file") MultipartFile file) {
         try {
             String algoScriptPath = fileTransferService.save(file);
             algo.setPath(algoScriptPath);
@@ -70,6 +70,7 @@ public class AlgoController {
                 String msg = "cannot find this role name";
                 return Response.httpError(msg);
             } else {
+                // TODO: 使用业务错误代码，不是http的状态code
                 algoService.deleteAlgoById(anAlgoByName.getId());
                 return Response.httpWith(HttpStatus.NO_CONTENT);
             }
