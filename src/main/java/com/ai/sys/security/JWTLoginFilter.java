@@ -1,6 +1,7 @@
 package com.ai.sys.security;
 
 import com.ai.sys.common.Response;
+import com.ai.sys.config.Constant;
 import com.ai.sys.model.LoginEntry;
 import com.ai.sys.service.user.SysUserService;
 import com.ai.sys.utils.JwtUtils;
@@ -77,7 +78,12 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         try {
             //TODO ResponseResultHandlerAdvice 无法拦截此处的返回值，暂时hardcode
             //登录成功時，返回json格式进行提示
-            ServletUtils.render(request, response, Response.httpOk(Map.of("token", token, "menu", principal.getSysMenus())));
+            ServletUtils.render(request,
+                    response,
+                    Response.put(Map.of(Constant.RESP_CODE, 20000,
+                            Constant.RESP_MESSAGE, "成功",
+                            Constant.RESP_MENU, token,
+                            Constant.RESP_TOKEN, principal.getSysMenus())));
         } catch (Exception e1) {
             e1.printStackTrace();
         }

@@ -52,16 +52,21 @@ public class Response extends ResponseEntity<HashMap<String, Object>> {
     }
 
     public static Response httpError(int code, String msg) {
-        return httpError(HttpStatus.OK, code, msg, "");
+        return httpError(HttpStatus.INTERNAL_SERVER_ERROR, code, msg, "");
     }
 
     public static Response httpError(int code, String msg, Object data) {
-            return httpError(HttpStatus.OK, code, msg, data);
+        return httpError(HttpStatus.INTERNAL_SERVER_ERROR, code, msg, data);
     }
 
     public static Response httpError(HttpStatus status, int code, String msg, Object data) {
         Map<String, Object> message = Map.of(CODE, code, MESSAGE, msg, DATA, data);
         return new Response(put(message), status);
+    }
+
+    public static Response httpOk(int code, String msg, Object data) {
+        Map<String, Object> message = Map.of(CODE, code, MESSAGE, msg, DATA, data);
+        return new Response(put(message), HttpStatus.OK);
     }
 
     public static Response httpOk(Map<String, Object> map) {
@@ -83,4 +88,5 @@ public class Response extends ResponseEntity<HashMap<String, Object>> {
     public static HashMap<String, Object> put(Map<String, Object> map) {
         return new HashMap<>(map);
     }
+
 }
