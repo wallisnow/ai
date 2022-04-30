@@ -64,6 +64,10 @@ public class Response extends ResponseEntity<HashMap<String, Object>> {
         return new Response(put(message), status);
     }
 
+    public static Response httpOk(int code, String msg) {
+        return httpOk(code, msg, "");
+    }
+
     public static Response httpOk(int code, String msg, Object data) {
         Map<String, Object> message = Map.of(CODE, code, MESSAGE, msg, DATA, data);
         return new Response(put(message), HttpStatus.OK);

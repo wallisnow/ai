@@ -64,20 +64,8 @@ public class AlgoController {
 
     @DeleteMapping("/{id}")
     public Response deleteAlgo(@PathVariable("id") Long id) {
-        try {
-            Algo anAlgoByName = algoService.findAnAlgoById(id);
-            if (Objects.isNull(anAlgoByName)) {
-                String msg = "cannot find this role name";
-                return Response.httpError(msg);
-            } else {
-                // TODO: 使用业务错误代码，不是http的状态code
-                algoService.deleteAlgoById(anAlgoByName.getId());
-                return Response.httpWith(HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Response.httpError();
-        }
+        algoService.deleteAlgoById(id);
+        return Response.httpOk();
     }
 
     @PutMapping(value = "/", consumes = {"application/json"})

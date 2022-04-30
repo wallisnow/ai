@@ -13,7 +13,7 @@ public interface AlgoService {
 
     void create(Algo algo) throws ResourceOperationException;
 
-    void deleteAlgoById(long id);
+    void deleteAlgoById(long id) throws ResourceOperationException;
 
     void update(Algo algo);
 

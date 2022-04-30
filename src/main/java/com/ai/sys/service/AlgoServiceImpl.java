@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Service
 @RequiredArgsConstructor
@@ -27,14 +30,30 @@ public class AlgoServiceImpl implements AlgoService {
         }
     }
 
-    public void deleteAlgoById(long id) {
-        algoRepository.deleteById(id);
+    public void deleteAlgoById(long id) throws ResourceOperationException {
+        handleAlgo(() -> {
+            algoRepository.deleteById(id);
+            return null;
+        }, id);
     }
 
     public void update(Algo algo) {
         boolean exists = algoRepository.existsById(algo.getId());
         if (exists) {
             algoRepository.save(algo);
+        } else {
+            throw ResourceOperationException.builder()
+                    .resourceName("Algorithm")
+                    .status(HttpStatus.NOT_FOUND)
+                    .message("Algorithm cannot be found")
+                    .build();
+        }
+    }
+
+    private void handleAlgo(Supplier<Void> supplier, long id) {
+        boolean exists = algoRepository.existsById(id);
+        if (exists) {
+            supplier.get();
         } else {
             throw ResourceOperationException.builder()
                     .resourceName("Algorithm")
