@@ -52,9 +52,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter
-    testImplementation 'org.testcontainers:junit-jupiter:1.16.2'
+    testImplementation 'org.testcontainers:junit-jupiter:1.17.1'
     // https://mvnrepository.com/artifact/org.testcontainers/postgresql
-    testImplementation 'org.testcontainers:postgresql:1.16.2'
+    testImplementation 'org.testcontainers:postgresql:1.17.1'
+    testImplementation 'org.awaitility:awaitility:4.2.0'
 }
 
 test {

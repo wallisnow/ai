@@ -1,17 +1,14 @@
 package com.ai.sys.train;
 
 import com.ai.sys.model.entity.Algo;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.util.FileSystemUtils;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
@@ -34,7 +31,6 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
 
     @Override
     public void process(@NonNull Algo algo, List<String> params) {
-        //TODO jun: to test this method
         try {
             unzipSourceCode(algo);
         } catch (IOException e) {
@@ -45,9 +41,9 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
         ProcessBuilder processBuilder =
                 new ProcessBuilder(
                         PYTHON_EXECUTOR,
-                        algoDir+'/'+algo.getId()+"/main.py",        // main path
+                        algoDir + '/' + algo.getId() + "/main.py",        // main path
                         algo.getDataSet().getPath(),                // dataset path
-                        resultDir+"/"+algo.getId()+resultSuffix);   // result path
+                        resultDir + "/" + algo.getId() + resultSuffix);   // result path
         processBuilder.redirectErrorStream(true);
 
         CompletableFuture.runAsync(() -> {
@@ -71,9 +67,10 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
     }
 
     private void unzipSourceCode(Algo algo) throws IOException {
-        File destDir = new File(algoDir+'/'+algo.getId());
-        if(destDir.exists())
+        File destDir = new File(algoDir + '/' + algo.getId());
+        if (destDir.exists()) {
             FileSystemUtils.deleteRecursively(destDir);
+        }
 
         byte[] buffer = new byte[1024];
         ZipInputStream zis = new ZipInputStream(new FileInputStream(algo.getPath()));

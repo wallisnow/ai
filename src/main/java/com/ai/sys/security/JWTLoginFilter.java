@@ -76,7 +76,6 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
                 .setUsername(principal.getUsername())
                 .setAuthorities(new HashSet<>(principal.getAuthorities())));
         try {
-            //TODO ResponseResultHandlerAdvice 无法拦截此处的返回值，暂时hardcode
             //登录成功時，返回json格式进行提示
             ServletUtils.render(request,
                     response,
