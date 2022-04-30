@@ -25,7 +25,7 @@ public class ResponseResultHandlerAdvice implements ResponseBodyAdvice<Object> {
                                   @NonNull MediaType selectedContentType, @NonNull Class selectedConverterType,
                                   @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
         if(MediaType.APPLICATION_JSON.equals(selectedContentType) || MediaType.APPLICATION_JSON_UTF8.equals(selectedContentType)){ // 判断响应的Content-Type为JSON格式的body
-            if(body instanceof Response){ // 如果响应返回的对象为统一响应体，则直接返回body
+            if(returnType.getGenericParameterType().equals(Response.class)){ // 如果响应返回的对象为统一响应体，则直接返回body
                 return body;
             }else{
                 // 只有正常返回的结果才会进入这个判断流程，所以返回正常成功的状态码
@@ -39,9 +39,8 @@ public class ResponseResultHandlerAdvice implements ResponseBodyAdvice<Object> {
 
                 if(body != null) {
                     if(body instanceof  Map){
-                        Object data = ((Map) body).get("data");
-                        if(body != null)
-                            responseResult.setData(data);
+                        Object data = ((Map<?, ?>) body).get("data");
+                        responseResult.setData(data);
                     }else
                         responseResult.setData(body);
                 }

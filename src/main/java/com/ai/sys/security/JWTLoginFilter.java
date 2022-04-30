@@ -82,8 +82,8 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
                     response,
                     Response.put(Map.of(Constant.RESP_CODE, 20000,
                             Constant.RESP_MESSAGE, "成功",
-                            Constant.RESP_MENU, token,
-                            Constant.RESP_TOKEN, principal.getSysMenus())));
+                            Constant.RESP_TOKEN, token,
+                            Constant.RESP_MENU, principal.getSysMenus())));
         } catch (Exception e1) {
             e1.printStackTrace();
         }
