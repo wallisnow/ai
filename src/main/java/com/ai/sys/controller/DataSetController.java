@@ -37,20 +37,16 @@ public class DataSetController {
 
 
     @PostMapping(value = "/simples", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<String> addAlgoWithFile(@RequestPart("dataset") DataSet dataSet, @RequestPart("file") MultipartFile file) {
+    public Response addAlgoWithFile(@RequestPart("dataset") DataSet dataSet, @RequestPart("file") MultipartFile file) {
+        String algoScriptPath = null;
         try {
-            String algoScriptPath = fileTransferService.save(file);
-            dataSet.setPath(algoScriptPath);
-            dataSetService.create(dataSet);
-            return ResponseEntity
-                    .ok()
-                    .body("Dataset created, and algo script path is: " + algoScriptPath);
+            algoScriptPath = fileTransferService.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Could not upload the file: " + file.getOriginalFilename() + "!");
+            return Response.httpError("Create dataset failed");
         }
+        dataSet.setPath(algoScriptPath);
+        dataSetService.create(dataSet);
+        return Response.httpOk("Dataset created, and algo script path is: " + algoScriptPath);
     }
 
     @PostMapping(value = "/add", consumes = {"application/json"})
