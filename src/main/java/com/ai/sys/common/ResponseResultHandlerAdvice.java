@@ -29,9 +29,6 @@ public class ResponseResultHandlerAdvice implements ResponseBodyAdvice<Object> {
                 return body;
             }else{
                 // 只有正常返回的结果才会进入这个判断流程，所以返回正常成功的状态码
-                // TODO
-                //  1.需要对Error做同样的处理
-                //  2.需要优化下面的代码，例如返回body的值，而不是写死
                 ResponseWrapper responseResult = new ResponseWrapper(
                         20000,
                         "成功"
