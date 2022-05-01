@@ -40,7 +40,7 @@ public class Algo extends DateAudit {
 
     private Boolean isCompleted;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "algoid")
     private List<AlgoResult> algoResults;
 }
