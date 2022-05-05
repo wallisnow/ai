@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -76,13 +77,17 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
                 .setUsername(principal.getUsername())
                 .setAuthorities(new HashSet<>(principal.getAuthorities())));
         try {
+            Map res = new HashMap();
+            res.put(Constant.RESP_CODE, 20000);
+            res.put(Constant.RESP_MESSAGE, "成功");
+            res.put("data", Map.of(
+                    Constant.RESP_TOKEN, token,
+                    Constant.RESP_MENU, principal.getSysMenus()));
+
             //登录成功時，返回json格式进行提示
             ServletUtils.render(request,
                     response,
-                    Response.put(Map.of(Constant.RESP_CODE, 20000,
-                            Constant.RESP_MESSAGE, "成功",
-                            Constant.RESP_TOKEN, token,
-                            Constant.RESP_MENU, principal.getSysMenus())));
+                    Response.put(res));
         } catch (Exception e1) {
             e1.printStackTrace();
         }
