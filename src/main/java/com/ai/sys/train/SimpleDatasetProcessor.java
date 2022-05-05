@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.FileSystemUtils;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -26,9 +29,38 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
     @Value("${workspace.resultsuffix}")
     private String resultSuffix;
 
+    @Value("${workspace.model}")
+    private String modelDir;
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+
     private final static String PYTHON_EXECUTOR = "python";
     private final static String PARAM_SPLITER = " ";
 
+    private final static String DOCKER_COMPOSE_TEMPLATE =
+            "version: \"3\"\n" +
+            "services:\n" +
+            "    mnist:\n" +
+//          "        container_name: mnist\n" +
+            "        container_name: %s\n" +
+            "        image: anibali/pytorch:1.10.2-nocuda\n" +
+            "        volumes:\n" +
+//          "            - \"./:/workspace\"\n" +
+//          "            - \"/Users/liujun/Desktop/AI/results:/result\"\n" +
+//          "            - \"/Users/liujun/Desktop/AI/datasets:/dataset\"\n" +
+//          "            - \"/Users/liujun/Desktop/AI/models/1:/model\"\n" +
+            "            - \"%s:/workspace\"\n" +
+            "            - \"%s:/result\"\n" +
+            "            - \"%s:/dataset\"\n" +
+            "            - \"%s:/model\"\n" +
+            "        command: /bin/bash -c \"cd /workspace && python main.py\"\n" +
+            "        environment:\n" +
+//            "          - JOB_ID=2";
+            "          - JOB_ID=%d";
+
+
+    //TODO improve code quality!
     @Override
     public void process(@NonNull Algo algo, List<String> params) {
         try {
@@ -38,12 +70,34 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
             log.error(e.getMessage());
         }
 
-        ProcessBuilder processBuilder =
-                new ProcessBuilder(
-                        PYTHON_EXECUTOR,
-                        algoDir + '/' + algo.getId() + "/main.py",        // main path
-                        algo.getDataSet().getPath(),                // dataset path
-                        resultDir + "/" + algo.getId() + resultSuffix);   // result path
+        // add docker compose file
+        BufferedWriter writer = null;
+        try {
+            Date date = new Date();
+//            String formattedDate= dateFormat.format(date);
+
+            writer = new BufferedWriter(new FileWriter(algoDir + '/' + algo.getId() + "/docker-compose.yml"));
+
+            writer.write(
+                    String.format(
+                            DOCKER_COMPOSE_TEMPLATE,
+                            "mnist-"+algo.getId(),                                      // name
+                            algoDir + '/' + algo.getId(),                               // workspace
+                            resultDir,                                                  // result
+                            algo.getDataSet().getPath(),                                // dataset
+                            modelDir+"/"+algo.getId()+"/" + dateFormat.format(date),   // model
+                            algo.getId()
+                            ));
+
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // launch docker
+        ProcessBuilder processBuilder = new ProcessBuilder("/usr/local/bin/docker-compose", "up", "-d");
+        processBuilder.directory(new File(algoDir + '/' + algo.getId()));
         processBuilder.redirectErrorStream(true);
 
         CompletableFuture.runAsync(() -> {
