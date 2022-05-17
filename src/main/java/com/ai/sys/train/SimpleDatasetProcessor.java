@@ -60,7 +60,9 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
             "          - JOB_ID=%d";
 
 
-    //TODO improve code quality!
+    //TODO
+    // 待重构，目前这部分是hard code，docker镜像名称是写死的
+    // 后期可能需要支持用户自己选择运行的docker镜像
     @Override
     public void process(@NonNull Algo algo, List<String> params) {
         try {

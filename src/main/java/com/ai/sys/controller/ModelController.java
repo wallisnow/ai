@@ -41,6 +41,7 @@ public class ModelController {
     }
 
     //TODO jun: to improve
+    // 这部份代码是从网上抄的，前端调用这个接口，下载模型文件
     @RequestMapping("/download/{path}")
     public void downloadPDFResource(HttpServletRequest request, HttpServletResponse response,
                                     @PathVariable("path") String path) throws IOException {

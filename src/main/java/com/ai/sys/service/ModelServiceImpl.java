@@ -46,6 +46,7 @@ public class ModelServiceImpl implements ModelService {
 
                 Model currentDirectory = new Model();
                 //TODO jun:向后兼容
+                // 我也忘了这个todo是要干啥。。。先保留着吧
                 currentDirectory.setId(UUID.randomUUID().getLeastSignificantBits());
                 currentDirectory.setName(path.getFileName().toString());
                 currentDirectory.setLastModified(
