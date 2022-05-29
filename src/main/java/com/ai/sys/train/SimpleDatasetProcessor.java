@@ -46,24 +46,24 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
 
     private final static String DOCKER_COMPOSE_TEMPLATE =
             "version: \"3\"\n" +
-                    "services:\n" +
-                    "    mnist:\n" +
+            "services:\n" +
+            "    mnist:\n" +
 //          "        container_name: mnist\n" +
-                    "        container_name: %s\n" +
-                    "        image: anibali/pytorch:1.10.2-nocuda\n" +
-                    "        volumes:\n" +
+            "        container_name: %s\n" +
+            "        image: anibali/pytorch:1.10.2-nocuda\n" +
+            "        volumes:\n" +
 //          "            - \"./:/workspace\"\n" +
 //          "            - \"/Users/liujun/Desktop/AI/results:/result\"\n" +
 //          "            - \"/Users/liujun/Desktop/AI/datasets:/dataset\"\n" +
 //          "            - \"/Users/liujun/Desktop/AI/models/1:/model\"\n" +
-                    "            - \"%s:/workspace\"\n" +
-                    "            - \"%s:/result\"\n" +
-                    "            - \"%s:/dataset\"\n" +
-                    "            - \"%s:/model\"\n" +
-                    "        command: /bin/bash -c \"cd /workspace && python main.py\"\n" +
-                    "        environment:\n" +
+            "            - \"%s:/workspace\"\n" +
+            "            - \"%s:/result\"\n" +
+            "            - \"%s:/dataset\"\n" +
+            "            - \"%s:/model\"\n" +
+            "        command: /bin/bash -c \"cd /workspace && python main.py\"\n" +
+            "        environment:\n" +
 //            "          - JOB_ID=2";
-                    "          - JOB_ID=%d";
+            "          - JOB_ID=%d";
 
 
     //TODO
