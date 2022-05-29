@@ -1,7 +1,12 @@
 package com.ai.sys.train;
 
 import com.ai.sys.model.entity.Algo;
-import lombok.Getter;
+import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.model.Bind;
+import com.github.dockerjava.api.model.HostConfig;
+import com.github.dockerjava.core.DefaultDockerClientConfig;
+import com.github.dockerjava.core.DockerClientBuilder;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -40,24 +46,24 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
 
     private final static String DOCKER_COMPOSE_TEMPLATE =
             "version: \"3\"\n" +
-            "services:\n" +
-            "    mnist:\n" +
+                    "services:\n" +
+                    "    mnist:\n" +
 //          "        container_name: mnist\n" +
-            "        container_name: %s\n" +
-            "        image: anibali/pytorch:1.10.2-nocuda\n" +
-            "        volumes:\n" +
+                    "        container_name: %s\n" +
+                    "        image: anibali/pytorch:1.10.2-nocuda\n" +
+                    "        volumes:\n" +
 //          "            - \"./:/workspace\"\n" +
 //          "            - \"/Users/liujun/Desktop/AI/results:/result\"\n" +
 //          "            - \"/Users/liujun/Desktop/AI/datasets:/dataset\"\n" +
 //          "            - \"/Users/liujun/Desktop/AI/models/1:/model\"\n" +
-            "            - \"%s:/workspace\"\n" +
-            "            - \"%s:/result\"\n" +
-            "            - \"%s:/dataset\"\n" +
-            "            - \"%s:/model\"\n" +
-            "        command: /bin/bash -c \"cd /workspace && python main.py\"\n" +
-            "        environment:\n" +
+                    "            - \"%s:/workspace\"\n" +
+                    "            - \"%s:/result\"\n" +
+                    "            - \"%s:/dataset\"\n" +
+                    "            - \"%s:/model\"\n" +
+                    "        command: /bin/bash -c \"cd /workspace && python main.py\"\n" +
+                    "        environment:\n" +
 //            "          - JOB_ID=2";
-            "          - JOB_ID=%d";
+                    "          - JOB_ID=%d";
 
 
     //TODO
@@ -73,38 +79,13 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
         }
 
         // add docker compose file
-        BufferedWriter writer = null;
-        try {
-            Date date = new Date();
-//            String formattedDate= dateFormat.format(date);
-
-            writer = new BufferedWriter(new FileWriter(algoDir + '/' + algo.getId() + "/docker-compose.yml"));
-
-            writer.write(
-                    String.format(
-                            DOCKER_COMPOSE_TEMPLATE,
-                            "mnist-"+algo.getId(),                                      // name
-                            algoDir + '/' + algo.getId(),                               // workspace
-                            resultDir,                                                  // result
-                            algo.getDataSet().getPath(),                                // dataset
-                            modelDir+"/"+algo.getId()+"/" + dateFormat.format(date),   // model
-                            algo.getId()
-                            ));
-
-            writer.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // launch docker
-        ProcessBuilder processBuilder = new ProcessBuilder("/usr/local/bin/docker-compose", "up", "-d");
-        processBuilder.directory(new File(algoDir + '/' + algo.getId()));
-        processBuilder.redirectErrorStream(true);
+        ProcessBuilder processBuilder = createContainerProcessBuilder(algo);
 
         CompletableFuture.runAsync(() -> {
                     log.debug(Thread.currentThread().getName() + "\t python process future run ... ...");
                     try {
+                        //use bootstrap docker client here
+                        //boostrapContainer(algo);
                         Process process = processBuilder.start();
                         InputStream inputStream = process.getInputStream();
                         String result = new BufferedReader(new InputStreamReader(inputStream))
@@ -120,6 +101,36 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
                     log.error(throwable.getMessage());
                     return null;
                 });
+    }
+
+    private ProcessBuilder createContainerProcessBuilder(Algo algo) {
+        BufferedWriter writer;
+        try {
+            Date date = new Date();
+            writer = new BufferedWriter(new FileWriter(algoDir + '/' + algo.getId() + "/docker-compose.yml"));
+
+            writer.write(
+                    String.format(
+                            DOCKER_COMPOSE_TEMPLATE,
+                            "mnist-" + algo.getId(),                                      // name
+                            algoDir + '/' + algo.getId(),                               // workspace
+                            resultDir,                                                  // result
+                            algo.getDataSet().getPath(),                                // dataset
+                            modelDir + "/" + algo.getId() + "/" + dateFormat.format(date),   // model
+                            algo.getId()
+                    ));
+
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // launch docker
+        ProcessBuilder processBuilder = new ProcessBuilder("/usr/local/bin/docker-compose", "up", "-d");
+        processBuilder.directory(new File(algoDir + '/' + algo.getId()));
+        processBuilder.redirectErrorStream(true);
+        return processBuilder;
     }
 
     private void unzipSourceCode(Algo algo) throws IOException {

@@ -7,8 +7,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.ConfigDataApplicationContextInitializer;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,11 +29,8 @@ import java.util.stream.Stream;
 import static org.awaitility.Awaitility.await;
 
 @SpringBootTest
-class SimpleDatasetProcessorTest {
-
-    public static final String TEST_ALGOS_TEST_ZIP = "D:\\code\\ai\\src\\test\\algos\\test.zip";
-    public static final String TEST_DATASET_HEART_CSV = "D:\\code\\ai\\src\\test\\dataset\\heart.csv";
-    public static final long ALGO_ID = 1;
+@ActiveProfiles("test")
+class SimpleDatasetProcessorTest extends AbstractProcessorTest{
 
     @Value("${workspace.result}")
     private String resultDir;
@@ -36,6 +38,11 @@ class SimpleDatasetProcessorTest {
     @Value("${workspace.resultsuffix}")
     private String resultSuffix;
 
+
+    @Value("${workspace.model}")
+    private String modelDir;
+
+    @Qualifier("datasetProcessor")
     @Autowired
     DatasetProcessor simpleDatasetProcessor;
 

@@ -60,9 +60,9 @@ logging:
 
 workspace:
     algo: D:\code\ai\src\test\algos
-    dataset: /Users/liujun/Desktop/AI/datasets
-    upload: /Users/liujun/Desktop/AI/uploads
+    dataset: D:\code\ai\src\test\datasets
+    upload: D:\code\ai\src\test\uploads
     result: D:\code\ai\src\test\results
-    model: /Users/liujun/Desktop/AI/models
+    model: D:\code\ai\src\test\models
     resultsuffix: .res
     sourcesuffix: .zip

@@ -1,5 +1,6 @@
 package com.ai.sys.config;
 
+import com.ai.sys.train.ContainerDatasetProcessor;
 import com.ai.sys.train.DatasetProcessor;
 import com.ai.sys.train.SimpleDatasetProcessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +13,11 @@ public class ProcessConfig {
     @Bean
     public DatasetProcessor datasetProcessor() {
         return new SimpleDatasetProcessor();
+    }
+
+    @Bean
+    public DatasetProcessor containerDatasetProcessor() {
+        return new ContainerDatasetProcessor();
     }
 
     /**
