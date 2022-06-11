@@ -1,13 +1,10 @@
 package com.ai.sys.controller;
 
 import com.ai.sys.model.Command;
-import com.ai.sys.model.entity.Algo;
 import com.ai.sys.service.AlgoService;
 import com.ai.sys.train.DatasetProcessor;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +39,7 @@ public class ExecutorController {
         }
     }
 
-    private void setAlgoToCompleted(final Long id){
-        algoService.updateCompleteStatus(id,true);
+    private void setAlgoToCompleted(final Long id) {
+        algoService.updateCompleteStatus(id, true);
     }
 }

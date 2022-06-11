@@ -12,5 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class Command {
     Algo algo;
-    List<String> params;
+    String image;
+    String fullCmd;
 }

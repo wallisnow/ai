@@ -8,6 +8,7 @@
 
 
 # MQ
+消息中间件引入kafka， 通过写入command的方式提交给消费者
 
 ## Create topic
 ```bash

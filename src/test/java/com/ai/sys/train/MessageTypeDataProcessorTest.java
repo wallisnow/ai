@@ -23,7 +23,7 @@ public class MessageTypeDataProcessorTest {
         Command command = new Command(Algo.builder()
                 .id(1)
                 .name("myalgo")
-                .build(), null);
+                .build(), null, "");
         messageTypeDataProcessor.process(command);
     }
 }

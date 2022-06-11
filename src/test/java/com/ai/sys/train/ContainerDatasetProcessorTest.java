@@ -41,7 +41,7 @@ class ContainerDatasetProcessorTest extends AbstractProcessorTest {
                         .name("dataset")
                         .path(TEST_DATASET_HEART_CSV).build())
                 .build();
-        Command command = new Command(build, null);
+        Command command = new Command(build, null, "");
         containerDatasetProcessor.process(command);
     }
 }

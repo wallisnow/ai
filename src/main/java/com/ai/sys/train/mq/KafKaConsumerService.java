@@ -14,10 +14,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class KafKaConsumerService {
     private final ObjectMapper objectMapper;
+    private final ConsumerContainer consumerContainer;
 
     @KafkaListener(topics = MqConstants.TOPIC_NAME, groupId = MqConstants.GROUP_ID)
     public void consume(ConsumerRecord<String, String> bookConsumerRecord) throws JsonProcessingException {
         Command command = objectMapper.readValue(bookConsumerRecord.value(), Command.class);
         log.info(String.format("Message received -> %s", command.toString()));
+        consumerContainer.run(command);
     }
 }
