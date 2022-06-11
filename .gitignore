@@ -38,6 +38,7 @@ out/
 
 ### DB ###
 /docker/pgdata/
+/docker/mq
 
 ### File upload location ###
 /uploads/

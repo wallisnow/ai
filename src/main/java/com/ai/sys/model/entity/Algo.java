@@ -1,6 +1,7 @@
 package com.ai.sys.model.entity;
 
 import com.ai.sys.model.entity.user.SysUser;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -15,6 +16,7 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @Entity
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Algo extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

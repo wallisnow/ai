@@ -21,24 +21,25 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.kafka:spring-kafka'
     // https://mvnrepository.com/artifact/org.flywaydb/flyway-core
-    implementation 'org.flywaydb:flyway-core:8.3.0'
+    implementation 'org.flywaydb:flyway-core:8.5.11'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-oauth2-resource-server
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.1'
-    implementation 'com.auth0:java-jwt:3.18.3'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.3'
+    implementation 'com.auth0:java-jwt:3.19.2'
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
-// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
-// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
-// https://mvnrepository.com/artifact/top.lrshuai.encryption/encryption-tools
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    // https://mvnrepository.com/artifact/top.lrshuai.encryption/encryption-tools
     implementation 'top.lrshuai.encryption:encryption-tools:1.0.4'
     // https://mvnrepository.com/artifact/com.alibaba/fastjson
     implementation 'com.alibaba:fastjson:1.2.79'

@@ -1,5 +1,6 @@
 package com.ai.sys.train;
 
+import com.ai.sys.model.Command;
 import com.ai.sys.model.entity.Algo;
 import com.ai.sys.model.entity.DataSet;
 import org.apache.commons.io.FileUtils;
@@ -61,7 +62,8 @@ class SimpleDatasetProcessorTest extends AbstractProcessorTest{
                         .name("dataset")
                         .path(TEST_DATASET_HEART_CSV).build())
                 .build();
-        simpleDatasetProcessor.process(build, List.of());
+        Command command = new Command(build, null);
+        simpleDatasetProcessor.process(command);
 
         await().atMost(20, TimeUnit.SECONDS).until(() -> {
             String rest = resultDir + "/" + ALGO_ID + resultSuffix;

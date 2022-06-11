@@ -1,5 +1,6 @@
 package com.ai.sys.train;
 
+import com.ai.sys.model.Command;
 import com.ai.sys.model.entity.Algo;
 import com.ai.sys.model.entity.DataSet;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,7 @@ class ContainerDatasetProcessorTest extends AbstractProcessorTest {
                         .name("dataset")
                         .path(TEST_DATASET_HEART_CSV).build())
                 .build();
-        containerDatasetProcessor.process(build, List.of(""));
+        Command command = new Command(build, null);
+        containerDatasetProcessor.process(command);
     }
 }

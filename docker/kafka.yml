@@ -1,0 +1,74 @@
+version: '3.3'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    volumes:
+      - ./mq/zookeeper/data:/data
+      - ./mq/zookeeper/datalog:/datalog
+      - ./mq/zookeeper/logs:/logs
+    restart: always
+  kafka1:
+    image: wurstmeister/kafka
+    depends_on:
+      - zookeeper
+    container_name: kafka1
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_LOG_DIRS: /data/kafka-data
+      KAFKA_LOG_RETENTION_HOURS: 24
+    volumes:
+      - ./mq/kafka/kafka1/data:/data/kafka-data
+    restart: unless-stopped
+#  for cluster
+#  kafka2:
+#    image: wurstmeister/kafka
+#    depends_on:
+#      - zookeeper
+#    container_name: kafka2
+#    ports:
+#      - 9093:9093
+#    environment:
+#      KAFKA_BROKER_ID: 2
+#      KAFKA_ZOOKEEPER_CONNECT: 192.168.56.101:2181
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192.168.56.101:9093
+#      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9093
+#      KAFKA_LOG_DIRS: /data/kafka-data
+#      KAFKA_LOG_RETENTION_HOURS: 24
+#    volumes:
+#      - /data/kafka2/data:/data/kafka-data
+#    restart: unless-stopped
+#  kafka3:
+#    image: wurstmeister/kafka
+#    depends_on:
+#      - zookeeper
+#    container_name: kafka3
+#    ports:
+#      - 9094:9094
+#    environment:
+#      KAFKA_BROKER_ID: 3
+#      KAFKA_ZOOKEEPER_CONNECT: 192.168.56.101:2181
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192.168.56.101:9094
+#      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9094
+#      KAFKA_LOG_DIRS: /data/kafka-data
+#      KAFKA_LOG_RETENTION_HOURS: 24
+#    volumes:
+#      - /data/kafka3/data:/data/kafka-data
+#    restart: unless-stopped
+#  kafka_manager:
+#    image: hlebalbau/kafka-manager:latest
+#    ports:
+#      - 9000:9000
+#    environment:
+#      ZK_HOSTS: zookeeper:2181
+#      APPLICATION_SECRET: letmein
+#    depends_on:
+#      - zookeeper
+#      - kafka1

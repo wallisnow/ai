@@ -36,6 +36,17 @@ spring:
         validate-on-migrate: true
         # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
         baseline-on-migrate: true
+    kafka:
+        consumer:
+            bootstrap-servers: localhost:9092
+            auto-offset-reset: earliest
+#            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#            value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        producer:
+            bootstrap-servers: localhost:9092
+            key-serializer: org.apache.kafka.common.serialization.StringSerializer
+            value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            #value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 login:
     token-key: Authorization

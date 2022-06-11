@@ -7,6 +7,7 @@ import com.ai.sys.train.DatasetProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,8 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/exec")
 public class ExecutorController {
-    private final DatasetProcessor datasetProcessor;
+
+    private final DatasetProcessor messageTypeDataProcessor;
     private final AlgoService algoService;
 
     @PostMapping("/algo")
@@ -27,7 +29,7 @@ public class ExecutorController {
     ResponseEntity<HttpStatus> execute(@RequestBody Command command) {
         try {
             algoService.updateCompleteStatus(command.getAlgo().getId(), false);
-            datasetProcessor.process(command.getAlgo(), command.getParams());
+            messageTypeDataProcessor.process(command);
             return ResponseEntity.accepted().build();
         } catch (InterruptedException | IOException e) {
             setAlgoToCompleted(command.getAlgo().getId());

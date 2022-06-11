@@ -1,5 +1,6 @@
 package com.ai.sys.train;
 
+import com.ai.sys.model.Command;
 import com.ai.sys.model.entity.Algo;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
@@ -63,23 +64,23 @@ public class SimpleDatasetProcessor implements DatasetProcessor {
             "        command: /bin/bash -c \"cd /workspace && python main.py\"\n" +
             "        environment:\n" +
 //            "          - JOB_ID=2";
-            "          - JOB_ID=%d";
+                    "          - JOB_ID=%d";
 
 
     //TODO
     // 待重构，目前这部分是hard code，docker镜像名称是写死的
     // 后期可能需要支持用户自己选择运行的docker镜像
     @Override
-    public void process(@NonNull Algo algo, List<String> params) {
+    public void process(Command command) {
         try {
-            unzipSourceCode(algo);
+            unzipSourceCode(command.getAlgo());
         } catch (IOException e) {
             e.printStackTrace();
             log.error(e.getMessage());
         }
 
         // add docker compose file
-        ProcessBuilder processBuilder = createContainerProcessBuilder(algo);
+        ProcessBuilder processBuilder = createContainerProcessBuilder(command.getAlgo());
 
         CompletableFuture.runAsync(() -> {
                     log.debug(Thread.currentThread().getName() + "\t python process future run ... ...");

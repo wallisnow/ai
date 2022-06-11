@@ -1,5 +1,6 @@
 package com.ai.sys.train;
 
+import com.ai.sys.model.Command;
 import com.ai.sys.model.entity.Algo;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
@@ -15,11 +16,10 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
-public class ContainerDatasetProcessor implements DatasetProcessor{
+public class ContainerDatasetProcessor implements DatasetProcessor {
 
     @Value("${workspace.algo}")
     private String algoDir;
@@ -40,8 +40,8 @@ public class ContainerDatasetProcessor implements DatasetProcessor{
     private final static String PARAM_SPLITER = " ";
 
     @Override
-    public void process(@NonNull Algo algo, List<String> params) throws InterruptedException, IOException, ExecutionException {
-        this.boostrapContainer(algo);
+    public void process(Command command) throws InterruptedException, IOException, ExecutionException {
+        this.boostrapContainer(command.getAlgo());
     }
 
     public void boostrapContainer(@NonNull Algo algo) {
