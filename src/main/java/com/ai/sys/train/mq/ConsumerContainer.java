@@ -30,11 +30,13 @@ public class ConsumerContainer {
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    private final String[] winCmd = {"C:\\Program Files\\Git\\bin\\bash.exe",
+            "D:\\code\\ai\\src\\main\\resources\\bin\\image_runner.sh"};
+
     public void run(Command command) throws IOException, InterruptedException {
-        //docker run -it --rm --name my-running-script -v "$PWD":/usr/src/myapp -w /usr/src/myapp python:3 python your-daemon-or-script.py
         log.info("收到消息 ... ... {}", command.getAlgo().getName());
         ProcessBuilder processBuilder = new ProcessBuilder();
-        processBuilder.command("C:\\Program Files\\Git\\bin\\bash.exe", "D:\\code\\ai\\src\\main\\resources\\bin\\container_runner.sh", "test.py");
+        processBuilder.command(winCmd);
         Process process = processBuilder.start();
         process.waitFor();
     }
