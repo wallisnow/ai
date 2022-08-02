@@ -88,14 +88,14 @@ public class SecurityUserService implements UserDetailsService {
         }
 
         //Remove this !!!
-        if (username.equals("admin")) {
-            SecurityUser securityUser = new SecurityUser();
-            securityUser.setUsername(user.getUsername())
-                    .setPassword(user.getPassword())
-                    .setAuthorities(Set.of(new SimpleGrantedAuthority("ROLE_" + Constant.ROLE_SUPER_ADMIN)))
-                    .setSysMenus(menus);
-            return securityUser;
-        }
+//        if (username.equals("admin")) {
+//            SecurityUser securityUser = new SecurityUser();
+//            securityUser.setUsername(user.getUsername())
+//                    .setPassword(user.getPassword())
+//                    .setAuthorities(Set.of(new SimpleGrantedAuthority("ROLE_" + Constant.ROLE_SUPER_ADMIN)))
+//                    .setSysMenus(menus);
+//            return securityUser;
+//        }
 
         SecurityUser securityUser = new SecurityUser();
         securityUser.setUsername(user.getUsername())
